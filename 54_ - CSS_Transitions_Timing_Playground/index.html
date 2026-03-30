@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 
+      Same 2-column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: animated box
+    */
+    body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+    }
+    /* Sidebar styling */
+    .sidebar {
+        background: #fff;
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+    }
+    h2 {
+        margin-top: 0;
+        font-size: 18px;
+    }
+    .control-group {
+        margin-bottom: 20px;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 6px;
+    }
+    input[type="text"],
+    input[type="range"],
+    select {
+        width: 100%;
+        padding: 6px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    .value {
+        font-size: 13px;
+        color: #444;
+        margin-top: 4px;
+    }
+     /* Preview area */
+    .preview {
+        padding: 20px;
+    }
+    /* The animated box. Hovering over it triggers the transition. */ 
+.animate-box {
+width: 150px;
+height: 150px;
+background: #4caf50;
+border-radius: 12px;
+transition: all 0.3s ease;  /* default, overwritten by JS */
+display: flex;
+justify-content: center;
+align-items: center;
+color: white;
+font-size: 20px;
+font-weight: bold;
+cursor: pointer;
+}
+ /* 
+      Hover state — this is what transitions animate *toward*.
+      You can change these values to experiment.
+    */
+    .animate-box:hover {
+transform: translateX(120px) scale(1.2);
+background: #ff7043;
+border-radius: 40px;
+}
+    </style>
+    <title>CSS Transitions & Timing Playground</title>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+        <h2>Transition & Timing Playground</h2>
+        <!-- PROPERTY -->
+         <div class="control-group">
+            <label>Transition Property</label>
+            <select id="propertySelect">
+                <option value="all">all</option>
+                <option value="transform">transform</option>
+                <option value="background">background</option>
+                <option value="border-radius">border-radius</option>
+            </select>
+         </div>
+         <!-- DURATION -->
+         <div class="control-group">
+            <label>Duration (seconds)</label>
+            <input type="range" id="durationSlider" min="0" max="3" step="0.1" value="0.3">
+            <div class="value" id="durationValue">0.3s</div>
+         </div>
+         <!-- DELAY -->
+         <div class="control-group">
+            <label>Delay (seconds)</label>
+            <input type="range" id="delaySlider" min="0" max="2" step="0.1" value="0">
+            <div class="value" id="delayValue">0s</div>
+         </div>
+          <!-- TIMING FUNCTION -->
+           <div class="control-group">
+            <label>Timing Function</label>
+            <select id="timingSelect">
+                <option value="ease">ease</option>
+                <option value="linear">linear</option>
+                <option value="ease-in">ease-in</option>
+                <option value="ease-out">ease-out</option>
+                <option value="ease-in-out">ease-in-out</option>
+                <option value="cubic-bezier">custom cubic-bezier()</option>
+            </select>
+           </div>
+           <!-- CUSTOM CUBIC BEZIER -->
+            <div class="control-group">
+                <label>Custom cubic-bezier()</label>
+                <input type="text" id="bezierInput" placeholder="cubic-bezier(0.25, 0.1, 0.25, 1)">
+            </div>         
+     </div>
+     <!-- Preview -->
+      <div class="preview">
+        <h2>Transition Preview</h2>
+        <div class="animate-box" id="animatedBox">
+            Hover Me
+        </div>
+      </div>  
+    <script>
+        // Grab elements
+    const animateBox = document.getElementById("animateBox");
+    const propertySelect = document.getElementById("propertySelect");
+    const durationSlider = document.getElementById("durationSlider");
+    const delaySlider = document.getElementById("delaySlider");
+    const timingSelect = document.getElementById("timingSelect");
+    const bezierInput = document.getElementById("bezierInput");
+    // Value displays
+    const durationValue = document.getElementById("durationValue");
+    const delayValue = document.getElementById("delayValue");
+     // Update function
+     function updateTransition() {
+        const property = propertySelect.value;
+        const duration = durationSlider.value;
+        const delay = delaySlider.value;
+        const timing = timingSelect.value;
+        // Update displays
+        durationValue.textContent = duration + "s"
+        delayValue.textContent = delay + "s"
+        // Determine timing function
+        let timingFunction = timing;
+        if (timing === "cubic-bezier") {
+            timingFunction = bezierInput.value || "cubic-bezier(0.25, 0.1, 0.25, 1)";
+        }
+        /*
+        Build the transition string:
+        Example:
+        "transform 0.5s ease-in 0.2s"
+      */
+        const transitionString = `${property} ${duration}s ${timingFunction} ${delay}s`;
+        // Apply transition to the box
+        animateBox.style.transition = transitionString;
+        }
+        // Attach listeners
+        propertySelect.addEventListener("change", updateTransition); 
+        durationSlider.addEventListener("input", updateTransition); 
+        delaySlider.addEventListener("input", updateTransition); 
+        timingSelect.addEventListener("change", updateTransition); 
+        bezierInput.addEventListener("input", updateTransition); 
+        //Initialize
+        updateTransition();
+    </script>
+</body>
+</html>

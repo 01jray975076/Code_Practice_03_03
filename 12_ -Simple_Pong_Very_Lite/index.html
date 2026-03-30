@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        #game { width: 400px; height: 300px; border: 2px solid #000; margin: 40px auto; position: relative; }
+        #ball { width: 20px; height: 20px; background: red; border-radius: 50%; position: absolute;}
+    </style>
+    <title>Simple Pong (Very Lite)</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-table-tennis-paddle-ball"></i> Mini Pong</h1>
+    <div id="game"><div id="ball"></div></div>  
+    <script>
+        let x=50, y=50, dx=2, dy=2;
+        function move() {
+            x+=dx; y+=dy;
+            if (x<0 || x>380) dx*=-1;
+            if (y<0 || y>280) dy*=-1;
+            ball.style.left=x+"px";
+            ball.style.top=y+"px";
+            requestAnimationFrame(move);
+        }
+        move();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

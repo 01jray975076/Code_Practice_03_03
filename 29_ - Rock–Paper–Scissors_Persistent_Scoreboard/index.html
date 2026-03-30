@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; }
+        button { margin: 10px; padding: 10px 20px; }
+    </style>
+    <title> Rock–Paper–Scissors (Persistent Scoreboard)</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-hand-fist"></i> RPS Scoreboard</h1>
+    <button onclick="play('rock')">🪨</button>
+    <button onclick="play('paper')">📄</button>
+    <button onclick="play('scissors')">✂️</button>
+    <p>Wins: <span id="w">0</span> | Losses: <span id="l">0</span></p>
+    <p id="out"></p>
+    <script>
+        let stats = JSON.parse(localStorage.getItem("rpsStats") || '{"w":0,"l":0}');
+        w.innerText = stats.w;
+        l.innerText = stats.l;
+        const choices = ["rock", "paper", "scissors"];
+        function play(user) {
+            let cpu = choices[Math.floor(Math.random()*3)];
+            let msg = "";
+            if (user === cpu) msg = "Tie";
+            else if (
+                (user === "rock" && cpu ==="scissors") || 
+                (user === "paper" && cpu ==="rock") || 
+                (user === "scissors" && cpu ==="paper")  
+            ) {
+                msg = "You win";
+                stats.w++;                
+            } else {
+                msg = "CPU wins";
+                stats.l++;
+            }
+            localStorage.setItem("rpsStats", JSON.stringify(stats));
+             w.innerText = stats.w;
+             l.innerText = stats.l;
+             out.innerText = `You: ${user} | CPU: ${cpu} → ${msg}`;            
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

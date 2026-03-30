@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .player {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        #progress {
+            width: 100%;
+            margin: 15px 0;
+        }
+    </style>
+    <title>Audio Player UI</title>
+</head>
+<body>
+    <h1 class="title">Audio Player</h1>
+    <div class="player">
+        <audio src="song.mp3" id="audio"></audio>
+    </div>
+    <button id="playBtn">Play</button>
+    <input type="range" id="progress" value="0">
+    <span id="timeDisplay">0:00 / 0:00</span>   
+    <script>
+        const audio = document.getElementById("audio");
+        const playBtn = document.getElementById("playBtn");
+        const progress = document.getElementById("progress");
+        const timeDisplay = document.getElementById("timeDisplay");
+        // Play /Pause toggle
+        playBtn.addEventListener("click", () => {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = "Pause";
+            } else {
+                audio.pause();
+                playBtn.textContent = "Play";
+            }
+        });
+        // Update progress bar as audio plays
+        audio.addEventListener("timeupdate", () => {
+            progress.value = (audio.currentTime / audio.duration) * 100;
+            updateTimeDisplay();
+        });
+        // Seek when user drags progress bar
+        progress.addEventListener("input", () => {
+            audio.currentTime = (progress.value / 100) * audio.duration;
+        });
+        // Format time
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60).toString().padStart(2, "0");
+            return `${m}:${s}`;
+        }
+    // Update time display
+    function updateTimeDisplay() {
+        timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    } 
+    // Load metadata (duration)
+    audio.addEventListener("loadedmetadata", updateTimeDisplay);   
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+   <style>
+
+   </style> 
+   <title>Simple Score Keeper</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-trophy"></i> Score Keeper</h1>
+    <p>Player A: <span id="a">0</span></p>
+    <p>Player B: <span id="b">0</span></p>
+    <button onclick="addA()">+A</button>
+    <button onclick="addB()">+B</button>    
+    <script>
+        let scores = JSON.parse(localStorage.getItem("scores") || '{"a":0,"b":0}');
+        a.innerText = scores.a;
+        b.innerText = scores.b;
+        function addA() {
+            scores.a++;
+            localStorage.setItem("scores", JSON.stringify(scores));
+            a.innerText = scores.a;
+        }
+        function addB() {
+            scores.b++;
+            localStorage.setItem("scores", JSON.stringify(scores));
+            b.innerText = scores.b;
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; padding: 40px; }
+    </style>
+    <title> Number Guessing Game</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-question"></i> Guess the Number</h1>
+    <input type="number" id="guess" min="1" max="20">
+    <button onclick="check()">Guess</button>
+    <p id="result"></p>
+    <script>
+        let secret = Math.ceil(Math.random()*20);
+        function check() {
+            let g = Number(guess.value);
+            result.innerText = g === secret ? "Correct!" : "Try again!";
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

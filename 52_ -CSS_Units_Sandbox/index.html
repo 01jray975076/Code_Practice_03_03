@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+         /* 
+      Same 2-column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: the box that changes size
+    */
+    body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+    }
+    /* Sidebar styling */
+    .sidebar { 
+        background: #fff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+        overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="range"],     
+select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+ /* Preview area */
+.preview { 
+    padding: 20px; 
+}
+/* 
+      The box whose size changes based on the selected unit.
+      It has a background so size changes are easy to see.
+    */
+.unit-box {
+background: #4caf50;
+border-radius: 10px;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 20px;
+font-weight: bold;
+transition: all 0.2s ease;
+width: 200px;
+height: 200px;
+}
+/*
+  Root font size for REM demonstration.
+      Browsers default to 16px, but we set it explicitly.
+ */
+ html {
+font-size: 16px;
+}
+    </style>
+    <title>CSS Units Sandbox</title>
+</head>
+<body>
+    <!-- Sidebar -->
+<div class="sidebar">
+    <h2>CSS Units Sandbox</h2>
+    <!-- UNIT TYPE -->
+<div class="control-group">
+    <label>Choose Unit</label>
+    <select id="unitSelect">
+        <option value="px">px (pixels)</option>
+        <option value="em">em (relative to element font-size)</option>
+        <option value="rem">rem (relative to root font-size)</option>
+        <option value="vw">vw (viewport width)</option>
+        <option value="vh">vh (viewport height)</option>
+        <option value="%">percent (%)</option>
+    </select>
+</div>
+<!-- SIZE SLIDER -->
+<div class="control-group">
+    <label>Size Value</label>
+    <input type="range" id="sizeSlider" min="10" max="80" value="20">
+    <div class="value" id="sizeValue">20</div>
+</div>
+<!-- FONT SIZE (for em demonstration) -->
+<div class="control-group">
+    <label>Box Font Size (affects em)</label>
+    <input type="range" id="fontSlider" min="10" max="40" value="20">
+    <div class="value" id="fontValue">20</div>
+</div>
+</div>
+<!-- Preview -->
+<div class="preview">
+    <h2>Unit Preview</h2>
+    <div class="unit-box" id="unitBox">
+        Box
+    </div>
+</div>  
+    <script>
+        // Grab elements
+        const unitBox = document.getElementById("unitBox");
+        const unitSelect = document.getElementById("unitSelect");
+        const sizeSlider = document.getElementById("sizeSlider");
+        const fontSlider = document.getElementById("fontSlider");
+        // Value displays
+        const sizeValue = document.getElementById("sizeValue");
+        const fontValue = document.getElementById("fontValue");
+        // Update function
+        function updateBox() {
+            const unit = unitSelect.value;     // px, em, rem, vw, vh, %
+            const size = sizeSlider.value;     // numeric value
+            const fontSize = fontSlider.value; // for em demonstration
+            // Update display text
+            sizeValue.textContent = size;
+            fontValue.textContent = fontSize + "px";
+            // Apply font size (affects em)
+            unitBox.style.fontSize = fontSize + "px";
+      /*
+        Apply width and height using the selected unit.
+        Example: "20px", "20em", "20vw", etc.
+      */
+     unitBox.style.width = size + unit;
+     unitBox.style.height = size + unit;
+    }
+     // Attach listeners
+     unitSelect.addEventListener("change", updateBox);
+     sizeSlider.addEventListener("input", updateBox);
+     fontSlider.addEventListener("input", updateBox);
+     //Initialize
+     updateBox();
+    </script>
+</body>
+</html>

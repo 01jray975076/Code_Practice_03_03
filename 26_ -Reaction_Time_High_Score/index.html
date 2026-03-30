@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        #box { width: 300px; height: 300px; background: #444; margin: 40px auto; cursor: pointer;}
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif;}
+    </style>
+    <title>Reaction Time High‑Score</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-bolt"></i> Reaction Time</h1>
+    <div id="box"></div>
+    <p>Last: <span id="last">0</span> ms</p>
+    <p>Best: <span id="best">-</span> ms</p>    
+    <script>
+        let start;
+       const bestEl = document.getElementById("best");
+        let best = JSON.parse(localStorage.getItem("bestRT") || "null");
+        if (best) bestEl.innerText = best;
+        function go() {
+            box.style.background = "green";
+            start = Date.now();
+        }
+        box.onclick = () => {
+            if (box.style.background === "green") {
+                let rt = Date.now() - start;
+                last.innerText = rt;
+                if (!best || rt < best) {
+                    best = rt;
+                    localStorage.setItem("bestRT", JSON.stringify(best));
+                    bestEl.innerText = best;
+                }
+                box.style.background = "#444";
+                setTimeout(go, Math.random()*2000+1000);
+            }
+        };
+        setTimeout(go, 1500);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

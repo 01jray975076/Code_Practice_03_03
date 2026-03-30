@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        } 
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-area {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 2px solid #ccc;
+        }
+        #addBtn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;           
+        }
+        .total {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #expenseList {
+            max-width: 500px;
+            margin: auto;
+            list-style: none;
+        }
+        .expense-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .deleteBtn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }       
+    </style>
+    <title>Expense Tracker</title>
+</head>
+<body>
+    <h1 class="title">Expense Tracker</h1>
+     <!-- INPUT AREA -->
+      <div class="input-area">
+        <input type="text" id="descInput" placeholder="Description">
+        <input type="number" id="amountInput" placeholder="Amount">
+        <button id="addBtn">Add</button>
+      </div>
+       <!-- TOTAL DISPLAY -->
+       <h2 class="total">Total: $<span id="totalAmount">0</span></h2>
+        <!-- EXPENSE LIST -->
+        <ul id="expenseList"></ul>
+        <!-- CHART -->
+        <canvas id="expenseChart"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>   
+    <script>
+        // DOM elements
+        const descInput = document.getElementById("descInput");
+        const amountInput = document.getElementById("amountInput");
+        const addBtn = document.getElementById("addBtn");
+        const expenseList = document.getElementById("expenseList");
+        const totalAmount = document.getElementById("totalAmount");
+        // Load saved expenses
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+        // Save to expenses
+        function saveExpenses() {
+            localStorage.setItem("expenses", JSON.stringify(expenses));
+        }
+        // Render expenses
+        function renderExpenses() {
+            expenseList.innerHTML = "";
+            let total = 0;
+            expenses.forEach(exp => {
+                total += exp.amount;
+            const li = document.createElement("li");
+            li.className = "expense-item";
+            li.innerHTML = `
+            <span>${exp.desc} - $${exp.amount}</span>
+            <button class="deleteBtn">X</button>
+            `;
+            li.querySelector(".deleteBtn").addEventListener("click", () => {
+             expenses = expenses.filter(e => e.id !== exp.id);
+             saveExpenses();
+             renderExpenses();
+             updateChart();   
+            });
+            expenseList.appendChild(li);
+            });
+            totalAmount.textContent = total;
+        }
+        // Add new expense
+        addBtn.addEventListener("click", () => {
+            const desc = descInput.value.trim();
+            const amount = Number(amountInput.value);
+            if (!desc || amountInput.value === "") return;
+            expenses.push({
+                id: Date.now(),
+                desc,
+                amount
+            });
+            descInput.value = "";
+            amountInput.value = "";
+            saveExpenses();
+            renderExpenses();
+            updateChart();
+        });
+        // Chart.js setup
+        const ctx = document.getElementById("expenseChart");
+        let chart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: ["#4caf50", "#2196f3", "#ffc107", "#ff5722", "#9c27b0"]
+                }]
+            }
+        });
+        // Update chart
+        function updateChart() {
+            chart.data.labels = expenses.map(e => e.desc);
+            chart.data.datasets[0].data = expenses.map(e => e.amount);
+            chart.update();
+        }
+        // Initial load
+        renderExpenses();
+        updateChart();
+    </script> 
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+margin: 0;
+font-family: system-ui, sans-serif;
+background: #0d1117;
+color: #eee;
+display: flex;
+justify-content: center;
+padding-top: 40px;
+}
+.container {
+width: 360px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+h1 {
+text-align: center;
+color: #58a6ff;
+}
+.calculator {
+margin-top: 20px;
+}
+#display {
+background: #0d1117;
+border: 1px solid #30363d;
+padding: 20px;
+font-size: 32px;
+text-align: right;
+border-radius: 8px;
+margin-bottom: 16px;
+}
+.buttons {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+}
+button {
+padding: 16px;
+font-size: 18px;
+border: none;
+border-radius: 8px;
+background: #21262b;
+color: #eee;
+cursor: pointer;
+transition: background 0.2s;
+}
+button:hover {
+background: #30363d;
+}
+.equals {
+background: #238636;
+}
+.equals:hover {
+background: #30363d;
+}
+.zero {
+grid-column: span 2;
+}
+.code-output {
+margin-top: 24px;
+background: #0d1117;
+border: 1px solid #30363d;
+padding: 16px;
+border-radius: 8px;
+}      
+    </style>
+    <title>Calculator Playground</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculator Playground</h1>
+        <div class="calculator">
+            <div id="display">0</div>
+            <div class="buttons">
+                <button data-action="clear">C</button>
+                <button data-action="delete">DEL</button>
+                <button data-action="operator">/</button>
+                <button data-action="operator">*</button>
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+                <button data-action="operator">-</button>
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+                 <button data-action="operator">+</button>
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                 <button data-action="equals" class="equals">=</button>
+                 <button class="zero">0</button>
+                 <button>.</button>
+            </div>
+        </div>
+        <div class="code-output">
+            <h3>Evaluation Code</h3>
+            <pre id="codeBlock"></pre>
+        </div>
+    </div>  
+    <script>
+        const display = document.getElementById("display");
+        const codeBlock = document.getElementById("codeBlock");
+        let current = ""; // what the user is typing
+        let result = "";  // last evaluated result
+        // Update code output panel
+        function updateCodeOutput(expression) {
+            const code = `
+            const expression = "${expression}";
+            const result = eval(expression);
+            `.trim();
+            codeBlock.textContent = code;
+        }
+// Handle button clicks
+document.querySelector(".buttons").addEventListener("click", (e) => {
+    const btn = e.target;
+    if (btn.tagName !== "BUTTON") return;
+    const action = btn.dataset.action;
+    const value = btn.textContent;
+    // Clear 
+    if (action === "clear") {
+        current = "";
+        display.textContent = "0";
+        updateCodeOutput("");
+        return;
+    }
+    // Delete last character
+    if (action === "delete") {
+        current = current.slice(0, -1);
+        display.textContent = current || "0";
+        updateCodeOutput(current);
+        return;
+    }
+    // Equals
+    if (action === "equals") {
+        try {
+            result = eval(current);
+            display.textContent = result;
+            updateCodeOutput(current);
+            current = String(result);
+        } catch {
+            display.textContent = "Error";
+        }
+        return;
+    }
+    // Operators
+    if (action === "operator") {
+        const last = current.slice(-1);
+        if ("+-*/".includes(last)) return; // prevent double operators
+        current += value;
+        display.textContent = current;
+        updateCodeOutput(current);
+        return;
+    }
+    // Numbers & decimal
+    current += value;
+    display.textContent = current;
+    updateCodeOutput(current);
+});         
+    </script>
+</body>
+</html>

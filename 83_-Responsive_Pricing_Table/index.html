@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset default spacing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* Page title */
+        .title {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 2.5rem;           
+        }
+        
+        /* PRICING GRID */
+        .pricing-container {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+               gap: 25px;
+               padding: 20px;
+               max-width: 1100px;
+               margin: auto;
+        }
+        /* PRICING CARD */
+        .pricing-card {
+               background: #fff;
+               padding: 30px;
+               border-radius: 12px;
+               text-align: center;
+               box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+               transition: transform 0.3s ease;
+        }
+        /* Hover effect */
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            padding: 10px;
+        }
+        /* Price styling */
+        .pricing {
+             font-size: 2.5em;
+             margin: 20px 0;
+             color: #4caf50;
+        }
+        .price span {
+            font-size: 1rem;
+            color: #555;
+        }
+        /* Feature list */
+        ul {
+            list-style: none;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        /* Button */
+        .btn {
+            background: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        /* POPULAR PLAN HIGHLIGHT */
+        .popular {
+            border: 3px solid #4caf50;
+            position: relative;
+        }
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #4caf50;
+            color: white;   
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }      
+    </style>
+    <title>Responsive Pricing Table
+</title>
+</head>
+<body>
+    <h1 class="title">Our Pricing Plans</h1>
+    <!-- PRICING GRID -->
+    <div class="pricing-container">
+        <!-- BASIC PLAN -->
+         <div class="pricing-card">
+            <h2>Basic</h2>
+         <p class="price">$9<span>/mo</span></p>
+        <ul>
+            <li>✔5 Projects</li>
+            <li>✔Basic Support</li>
+            <li>✔Community Access</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+        </div>
+        <!-- POPULAR PLAN (highlighted) -->
+         <div class="pricing-card popular">
+            <h2>Pro</h2>
+         <p class="price">$19<span>/mo</span></p>
+        <ul>
+            <li>✔20 Projects</li>
+            <li>✔Priority Support</li>
+            <li>✔Community Access</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+        </div>
+        <!-- PREMIUM PLAN (highlighted) -->
+         <div class="pricing-card popular">
+            <h2>Premium</h2>
+         <p class="price">$29<span>/mo</span></p>
+        <ul>
+            <li>✔Unlimited Projects</li>
+            <li>✔Priority Support</li>
+            <li>✔24/7 Access</li>
+        </ul>
+        <button class="btn">Choose Plan</button>
+        </div> 
+     </div>
+    <script>
+        // OPTIONAL FEATURE: Toggle between monthly and yearly pricing
+        // Example pricing data
+        const prices = {
+            monthly: [9, 19, 29],
+            yearly: [20, 190, 290] // 2 months free
+       };
+       // Select all price elements
+       const priceEls = document.querySelectorAll(".price");
+       // Toggle function
+       function switchPricing(mode) {
+        priceEls.forEach((el, index) => {
+            // Update the price text
+            el.innerHTML = `$${prices[mode][index]}<span>/${mode === "monthly" ? "mo" : "yr"}</span>`;        
+        });
+       }
+       // Example usage:
+// switchPricing("yearly");
+// switchPricing("monthly");
+    </script>
+</body>
+</html>

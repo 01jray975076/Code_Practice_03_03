@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .quiz-box {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .answer-btn {
+            width: 100%;
+            margin: auto;
+            background: #eee;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer; 
+        }
+        .correct {
+            background: #4caf50;
+            color: white;
+        }
+        .wrong {
+            background: #f44336;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+        #nextBtn, #restartBtn {
+            width: 100%;
+            padding: 12px;
+            background: #2196f3;
+            color: white;
+            bottom: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+    </style>
+    <title>Quiz App</title>
+</head>
+<body>
+    <h1 class="title">Quiz App</h1>
+    <div class="quiz-box">
+        <h2 id="questionText"></h2>
+        <div id="answers"></div>
+        <button id="nextBtn" class="hidden">Next</button>
+        <button id="restartBtn" class="hidden">Restart</button>
+    </div>   
+    <script>
+        // Quiz questions
+        const questions = [
+            {
+                text: "What does HTML stand for?",
+                answers: [
+                    {text: "HyperText Markup Language", correct: true },
+                    {text: "Home Tool Markup Language", correct: false },
+                    {text: "Hyperlinks and Text Markup Language", correct: false },
+                ]
+            },
+            {
+        text: "Which language runs in a web browser?",
+        answers: [
+            { text: "Python", correct: false },
+            { text: "JavaScript", correct: true },
+            { text: "C++", correct: false }
+        ]
+    },
+    {
+        text: "What does CSS control?",
+        answers: [
+            { text: "Structure", correct: false },
+            { text: "Styling", correct: true },
+            { text: "Database", correct: false }
+        ]
+    }
+];
+// DOM elements
+const questionText = document.getElementById("questionText");
+const answers = document.getElementById("answers");
+const nextBtn = document.getElementById("nextBtn");
+const restartBtn = document.getElementById("restartBtn");
+let currentIndex = 0;
+let score = 0;
+// Load a question
+function loadQuestion() {
+    const q = questions[currentIndex];
+    questionText.textContent = q.text;
+    answers.innerHTML = "";
+    q.answers.forEach(ans => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = ans.text;
+        btn.addEventListener("click", () => selectAnswer(btn, ans.correct));
+        answers.appendChild(btn);
+    });
+}
+// Handle answer selection
+function selectAnswer(button, correct) {
+    if (correct) {
+        button.classList.add("correct");
+        score++;
+    } else {
+        button.classList.add("wrong")
+    }
+     // Disable all buttons
+     document.querySelectorAll(".answer-btn").forEach(btn => btn.disabled = true);
+    nextBtn.classList.remove("hidden");
+}
+// Next question
+nextBtn.addEventListener("click", () => {
+    currentIndex++
+    if (currentIndex < questions.length) {
+        nextBtn.classList.add("hidden");
+        loadQuestion();
+    } else {
+        showResults();
+    }
+});
+// Show results
+function showResults() {
+    questionText.textContent = `You scored ${score} / ${questions.length}`;
+    answers.innerHTML = "";
+    nextBtn.classList.add("hidden");
+    restartBtn.classList.remove("hidden");
+}
+// Restart quiz
+restartBtn.addEventListener("click", () => {
+    currentIndex = 0;
+    score = 0;
+    restartBtn.classList.add("hidden");
+    loadQuestion();
+});
+// Initial load
+loadQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>        
+    </style>
+    <title>Simple Bookmark Saver</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-bookmark"></i> Bookmarks</h1>
+    <input id="url" placeholder="https://example.com">
+    <button onclick="save()">Save</button>
+    <ul id="list"></ul>    
+    <script>
+        let links = JSON.parse(localStorage.getItem("links") || "[]");
+        function render() {
+            list.innerHTML = links.map((l,i)=>`
+            <li><a href="${l}" target="_blank">${l}</a>
+            <button onclick="del(${i})"><i class="fa-solid fa-trash"></i></button></li>
+            `).join("");
+        }
+        function save() {
+            if (!url.value.trim()) return;
+            links.push(url.value.trim());
+            localStorage.setItem("links", JSON.stringify(links));
+            url.value = "";
+            render();
+        }
+        function del(i) {
+            links.splice(i,1);
+            localStorage.setItem("links", JSON.stringify(links));
+            render();
+        }
+        render()
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

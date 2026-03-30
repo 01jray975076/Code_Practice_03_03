@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+}
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="range"]
+{
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #000;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+.preview {
+padding: 20px;
+overflow-y: auto;
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 800px;
+}
+.transform-box {
+width: 180px;
+height: 180px;
+background: #4a90e2;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 20px;
+font-weight: bold;
+transition: transform 0.2s ease;
+transform-style: preserve-3d;
+}
+    </style>
+    <title>CSS 3D Transform Playground</title>
+</head>
+<body>
+    <div class="sidebar">
+     <h2>CSS 3D Transform Playground</h2>
+   <div class="control-group"> <label>Rotate X (deg)</label> <input type="range" id="rotateX" min="-180" max="180" value="0"> <div class="value" id="rotateXValue">0°</div>
+   </div>
+   <div class="control-group"> <label>Rotate Y (deg)</label> <input type="range" id="rotateY" min="-180" max="180" value="0"> <div class="value" id="rotateYValue">0°</div>
+   </div>
+   <div class="control-group"> <label>Rotate Z (deg)</label> <input type="range" id="rotateZ" min="-180" max="180" value="0"> <div class="value" id="rotateZValue">0°</div>
+   </div>
+   <div class="control-group"> <label>translate Z (px)</label> <input type="range" id="translateZ" min="-200" max="200" value="0"> <div class="value" id="translateZValue">0px</div>
+   </div>
+   <div class="control-group"> <label>perspectiveSlider (px)</label> <input type="range" id="perspectiveSlider" min="100" max="2000" value="800"> <div class="value" id="perspectiveValue">800px</div>
+   </div>
+</div>
+<!-- Preview -->
+ <div class="preview" id="previewArea">
+<div class="transform-box" id="transformBox">
+    3D Box
+</div>
+ </div>  
+    <script>
+        // Gtab DOM elements
+        const box = document.getElementById("transformBox");
+        const preview = document.getElementById("previewArea");
+        // Sliders
+        const rotateX = document.getElementById("rotateX");
+        const rotateY = document.getElementById("rotateY");
+        const rotateZ = document.getElementById("rotateZ");
+        const translateZ = document.getElementById("translateZ");
+        const perspectiveSlider = document.getElementById("perspectiveSlider"); // Sliders
+        // Value displays
+        const rotateXValue = document.getElementById("rotateXValue");
+        const rotateYValue = document.getElementById("rotateYValue");
+        const rotateZValue = document.getElementById("rotateZValue");
+        const translateZValue = document.getElementById("translateZValue");
+        const perspectiveValue = document.getElementById("perspectiveValue");
+         /**
+     * updateTransform()
+     * ------------------
+     * Reads all slider values, updates the text labels,
+     * and applies a combined 3D transform to the box.
+     */
+    function updateTransform() {
+        // Convert slider values to numbers
+        const x = Number(rotateX.value);
+        const y = Number(rotateY.value);
+        const z = Number(rotateZ.value);
+        const tz = Number(translateZ.value);
+        const perspective = Number(perspectiveSlider.value);
+         // Update UI labels
+        rotateXValue.textContent = x + "°"; 
+        rotateYValue.textContent = y + "°"; 
+        rotateZValue.textContent = z + "°"; 
+        translateZValue.textContent = tz + "px"; 
+        perspectiveValue.textContent = perspective + "px";
+         // Apply perspective to the preview container
+        preview.style.perspective = perspective + "px"
+        // Apply the combined 3D transform
+        box.style.transform = `
+        rotateX(${x}deg)
+        rotateY(${y}deg)
+        rotateZ(${z}deg)
+        translateZ(${tz}px)
+        `;
+    }
+    // Attach listeners to all sliders
+    [
+        rotateX,
+        rotateY,
+        rotateZ,
+        translateZ,
+        perspectiveSlider
+    ].forEach(el => el.addEventListener("input", updateTransform));
+    // Initialize on load
+    updateTransform();
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+       body { margin: 0; font-family: system-ui, sans-serif; display: flex; grid-template-columns: 260px 1fr; height: 100vh; background: #f5f5f5;} 
+       /* Sidebar */
+       .sidebar { background: #fff; border-right: 1px solid #ddd; padding: 20px; overflow-y: auto; }
+       h2 { margin-top: 0; font-size: 18px; }
+       .section-title { margin-top: 25px; font-weight: bold; font-size: 15px; color: #444; }
+       .snippet { display: inline-block; background: #1e1e1e; color: #dcdcdc; padding: 10px; border-radius: 6px; margin: 10px 0; cursor: pointer; font-family: "Fira Code", monospace; font-size: 14px; border: 2px solid transparent; white-space: pre-wrap; width: 100%; box-sizing: border-box;}
+       .snippet-active { border-color: #0078d4; background: #252526; }
+       /* Preview */
+       .preview { padding: 20px; }
+       .demo-area { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; min-height: 300px; }
+       .item { background: #ffb3; border: 2px solid #c2185b; padding: 10px; font-weight: bold; text-align: center; margin: 5px; width: 80px; }
+       /* For inline demo */
+       .inline-wrapper { background: #e3f2fd; padding: 10px; border-radius: 6px; display: inline-block; }   
+ </style>
+    <title>CSS Display Playground</title>
+</head>
+<body>
+    <!-- Sidebar -->
+<div class="sidebar">
+    <h2>CSS Display Playground</h2>
+    <div class="section-title">Display Modes</div>
+    <div class="snippet active" data-css="display: block;">
+        display: block;
+    </div>
+    <div class="snippet" data-css="display: inline;">
+        display: inline;
+    </div>
+    <div class="snippet" data-css="display: inline-block;">
+        display: inline-block;
+    </div>
+    <div class="snippet" data-css="display: flex;">
+        display: flex;
+    </div>
+    <div class="snippet" data-css="display: grid;">
+        display: grid;
+    </div>
+    <div class="snippet" data-css="display: contents;">
+        display: contents;
+    </div>
+    <div class="snippet" data-css="display: none;">
+        display: none;
+    </div>
+</div>
+<!-- Preview -->
+<div class="preview">
+    <h2 id="title">Display Preview</h2>
+    <div class="demo-area" id="demo">
+        <div class="item">One</div>
+        <div class="item">Two</div>
+        <div class="item">Three</div>
+    </div>
+</div>
+<script>
+    const snippets = document.querySelectorAll(".snippet");
+    const demo = document.getElementById("demo");
+    snippets.forEach(snippet => {
+          snippet.addEventListener("click", () => {
+            snippets.forEach(s => s.classList.remove("active"));
+            snippet.classList.add("active");
+            const css = snippet.dataset.css;
+            // Reset demo container
+            demo.style.display = "";
+            demo.style.gridTemplateColumns = "";
+            demo.style.flexDirection = "";
+            //Apply new display mode
+            demo.style.display = css.replace("display:", "").replace(";", "").trim();
+            // Add helpful defaults for grid/flex
+            if (css.includes("grid")) {
+                demo.style.gridTemplateColumns = "repeat(3, 1fr)";
+            }
+            if (css.includes("flex")) {
+                demo.style.flexDirection = "row";
+            }
+        });
+    });
+</script>
+<script src="script.js"></script>
+</body>
+</html>

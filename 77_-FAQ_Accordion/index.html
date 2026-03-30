@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .answer {
+            display: none;
+            padding: 10px 0;
+        }
+        .question {
+            cursor: pointer;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+    <title>FAQ Accordion</title>
+</head>
+<body>
+    <div class="accordian">
+        <h3 class="question">What is HTML?</h3>
+        <p class="answer">HTML is the structure of a webpage.</p>
+        <h3 class="question">What is CSS?</h3>
+        <p class="answer">CSS styles the webpage.</p>
+    </div>  
+    <script>
+        const questions = document.querySelectorAll(".question");
+        questions.forEach(q => {
+            q.addEventListener("click", () => {
+            const answer = q.nextElementSibling;
+            answer.style.display = answer.style.display === "block" ? "none" : "block";
+            })
+        })
+    </script>
+</body>
+</html>

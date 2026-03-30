@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; padding: 40px; }
+        .dice { font-size: 60px; margin: 20px;}
+    </style>
+    <title>Dice Roller Game</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-dice"></i> Dice Roller</h1>
+    <div class="dice" id="d1"></div>
+    <div class="dice" id="d2"></div>
+    <button onclick="roll()">Roll Dice</button>
+    <p id="total"></p>
+    <script src="script.js"></script>
+    <script>
+        function roll() {
+        let a = Math.ceil(Math.random() * 6)
+        let b = Math.ceil(Math.random() * 6)
+        document.getElementById("d1").innerText = a;
+        document.getElementById("d2").innerText = b;
+        document.getElementById("total").innerText = "Total: " + (a + b);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+         /* 
+      The entire page uses a 2‑column CSS Grid:
+      - Left column: sidebar (fixed width)
+      - Right column: preview area (flexible)
+    */
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            height: 100vh;
+            background: #f5f5f5;
+        }
+        /* Sidebar */
+        .sidebar {
+            background: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .section-title {
+            margin-top: 25px;
+            font-weight: bold;
+            font-size: 15px;
+            color: #444;
+        }
+         /* 
+      Each "snippet" is a clickable code block.
+      When clicked, it applies a CSS rule to the preview box.
+    */
+        .snippet {
+            display: inline-block;  /* Makes background wrap full width */
+            background: #1e1e1e;
+            color: #dcdcdc;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            cursor: pointer;
+            font-family: "Fira Code", monospace;
+            font-size: 14px;
+            border: 2px solid transparent;
+            white-space: pre-wrap; /* Allows multi-line code formatting */
+            width: 100%;
+            box-sizing: border-box;
+        }
+         /* Highlight the active snippet */
+        .snippet.active {
+           border-color: #0078d4;
+           background: #252526; 
+        }
+        /* Preview area container */
+        .preview {
+            padding: 20px;
+        }
+        /* 
+      The box that demonstrates overflow behavior.
+      It has a fixed height so overflow becomes visible.
+    */
+        .demo-area {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            height: 300px; /* Important: overflow only matters when content exceeds this */
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+        /* 
+      This is the intentionally oversized content.
+      It is larger than the container so overflow behavior is obvious.
+    */
+        .content {
+            background: #ffb3c1;
+            border: 2px solid #c2185b;
+            padding: 20px;
+            width: 500px;  /* Wider than container */
+            height: 500px; /* Taller than container */
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+    </style>
+    <title>CSS_Overflow_Playground</title>
+</head>
+<body>
+    <!-- Sidebar -->
+       <!-- Sidebar with clickable overflow options -->
+<div class="sidebar">
+    <h2>Overflow Playground</h2>    
+    <div class="section-title">Overflow Modes</div>
+     <!-- Each snippet stores a CSS rule in data-css -->
+<div class="snippet active" data-css="overflow: visible;">overflow: visible;</div>
+<div class="snippet" data-css="overflow: hidden;">overflow: hidden;</div>
+<div class="snippet" data-css="overflow: scroll;">overflow: scroll;</div>
+<div class="snippet" data-css="overflow: auto;">overflow: auto;</div>
+<div class="snippet" data-css="overflow-x: scroll;">overflow-x: scroll;</div>
+<div class="snippet" data-css="overflow-y: scroll;">overflow-y: scroll;</div>
+</div>
+<!-- Preview -->
+<div class="preview">
+    <h2>Over Preview</h2>
+    <!-- The container whose overflow behavior we change -->
+    <div class="demo-area" id="demo">
+        <div class="content">
+            This content is intentionally oversized so you can see how overflow behaves.
+        Resize the box using the controls and watch how scrollbars appear or disappear.
+        </div>
+    </div>
+</div>  
+<script>
+    // Grab all clickable snippets
+    const snippets = document.querySelectorAll(".snippet");
+    // The preview container whose overflow we modify
+    const demo = document.getElementById("demo");
+   // Loop through each snippet and attach a click event
+    snippets.forEach(snippet => {
+        snippet.addEventListener("click", () => {
+            // Remove highlight from all snippets
+            snippets.forEach(s => s.classList.remove("active"));
+            // Highlight the clicked snippet
+            snippet.classList.add("active");
+            // Read the CSS rule stored in data-css
+            const css = snippet.dataset.css;
+            // Reset overflow properties
+             /*
+          Reset overflow properties before applying new ones.
+          This ensures only the selected rule is active.
+        */
+            demo.style.overflow = "";
+            demo.style.overflowX = "";
+            demo.style.overflowY = "";
+            // Apply new overflow rule(s)
+             /*
+          Some snippets contain multiple rules (e.g., overflow-x + overflow-y).
+          Split them and apply each one individually.
+        */          
+            css.split(";").forEach(rule => {
+                if (rule.trim().length > 0) {
+                    const [prop, value] = rule.split(":");
+                    demo.style[prop.trim()] = value.trim();
+                }
+            });
+        });
+    });
+</script>
+<script src="script.js"></script>
+</body>
+</html>

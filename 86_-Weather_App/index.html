@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    /* Title */
+    .title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2rem;
+    }
+    /* Search Area  */
+    .search-box {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    #cityInput {
+       padding: 10px;
+       width: 250px;
+       border: 2px solid #ccc;
+       border-radius: 6px; 
+    }
+    #searchBtn {
+        padding: 10px 20px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    #searchBtn:hover {
+        background: #45a049;
+    }
+    /* Weather result box */
+    .weather {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .weather img {
+        width: 100px;
+        margin: 10px 0;            
+    }
+    .error {
+        text-align: center;
+        color: red;
+        margin-top: 20px;
+    }
+    /* Hidden class */
+    .hidden {
+        display: none;
+    }
+
+  </style>
+    <title>Weather App</title>
+</head>
+<body>
+    <h1 class="title">Weather App</h1>
+     <!-- SEARCH AREA -->
+      <div class="search-box">
+        <input type="text" id="cityInput" placeholder="Enter city name...">
+        <button id="searchBtn">Search</button>
+      </div>
+      <!-- WEATHER RESULT -->
+       <div id="weatherResult" class="weather hidden">
+        <h2 id="cityName"></h2>
+        <img src="" alt="Weather Icon" id="weatherIcon">
+        <p id="temperature"></p>
+        <p id="description"></p>
+       </div>
+       <!-- ERROR MESSAGE -->
+        <p id="errorMessage" class="error hidden">City not found. Try again.</p>
+    <script>
+        const cityInput = document.getElementById("cityInput");
+        const  weatherResult  = document.getElementById("weatherResult");
+        const  cityName  = document.getElementById("cityName");
+        const  temperature  = document.getElementById("temperature");
+        const  description  = document.getElementById("description");
+        const  weatherIcon  = document.getElementById("weatherIcon");
+        const  errorMessage  = document.getElementById("errorMessage");
+        // Your API key (replace with your own)
+        const API_KEY = "c6e5a02191f6dd1a3f4335b78018ac39";
+        // Search button click
+        searchBtn.addEventListener("click", getWeather);
+        // Press Enter to search
+        cityInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") getWeather();
+        });
+        // Main function: fetch weather data
+        async function getWeather() {
+            const city = cityInput.value.trim();
+            if (city === "") return;
+             // Build API URL
+             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${"c6e5a02191f6dd1a3f4335b78018ac39"}&units=imperial`;
+             try {
+                const response = await fetch(url);
+                // If city not found
+                if (!response.ok){
+                    showError();
+                    return
+                }
+                const data = await response.json();
+                // Update UI with weather data
+                cityName.textContent = data.name;
+                temperature.textContent = `${Math.round(data.main.temp)}°F`;
+                description.textContent = data.weather[0].description;
+                // Weather icon
+                const iconCode = data.weather[0].icon;
+;                weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+                // Show weather box, hide error
+                weatherResult.classList.remove("hidden");
+                errorMessage.classList.add("hidden");
+             } catch (error) {
+                showError();
+             }
+        }
+        // Show error message
+        function showError() {
+            weatherResult.classList.add("hidden");
+            errorMessage.classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>

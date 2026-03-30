@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+background: #0d1117;
+color: #eee;
+font-family: system-ui, sans-serif;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+gap: 32px;
+min-height: 100vh;
+margin: 0;
+}
+h1 {
+color: #58a6ff;
+margin-bottom: 8px;
+}
+.preview-box {
+width: 250px;
+height: 250px;
+background: #238636;
+border-radius: 20px;
+transition: border-radius 0.15s ease;
+box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.controls {
+display: flex;
+flex-direction: column;
+gap: 20px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+width: 100%;
+max-width: 500px;
+box-shadow: 0 4px 12px(0,0,0,0,4);
+}
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+label  {
+font-size: 14px;
+color: #9da5b4;
+}
+input[type="range"] {
+width: 100%;
+}
+.css-output {
+background: #161b22;
+padding: 16px;
+border-radius: 8px;
+font-family: monospace;
+font-size: 14px;
+color: #79c0ff;
+user-select: all;
+max-width: 500px;
+width: 100%;
+text-align: center;
+}  
+    </style>
+    <title>Border Radius</title>
+</head>
+<body>
+    <h1>Border Radius Playground</h1>
+    <div class="preview-box" id="previewBox"></div>
+    <!-- Controls -->
+<div class="controls">
+    <div class="control-group">
+        <label for="topLeft">Top Left</label>
+        <input type="range" id="topLeft" min="0" max="150" value="20">
+    </div>
+    <div class="control-group">
+        <label for="topRight">Top Right</label>
+        <input type="range" id="topRight" min="0" max="150" value="20">
+    </div>
+    <div class="control-group">
+        <label for="bottomLeft">Bottom Left</label>
+        <input type="range" id="bottomLeft" min="0" max="150" value="20">
+    </div>
+    <div class="control-group">
+        <label for="bottomRight">Bottom Right</label>
+        <input type="range" id="bottomRight" min="0" max="150" value="20">
+    </div>
+</div>
+<!-- Output CSS -->
+<div class="css-output" id="cssOutput">
+    border-radius: 20px 20px 20px 20px;
+</div>  
+    <script>
+         // Grab elements
+    const previewBox = document.getElementById('previewBox');
+    const cssOutput = document.getElementById('cssOutput');
+    // Sliders
+    const topLeft = document.getElementById('topLeft');
+    const topRight = document.getElementById('topRight');
+    const bottomLeft = document.getElementById('bottomLeft');
+    const bottomRight = document.getElementById('bottomRight');
+// Update the border radius live
+function updateRadius() {
+  // Read slider values
+const tl = topLeft.value; 
+const tr = topRight.value; 
+const bl = bottomLeft.value; 
+const br = bottomRight.value;
+// Build CSS rule
+const radius = `${tl}px ${tr}px ${bl}px ${br}px`; 
+// Apply to preview box
+previewBox.style.borderRadius = radius;
+// Update output section
+cssOutput.textContent = `border-radius: ${radius};`;
+}
+ // Attach listeners
+topLeft.addEventListener('input', updateRadius);
+topRight.addEventListener('input', updateRadius);
+bottomLeft.addEventListener('input', updateRadius);
+bottomRight.addEventListener('input', updateRadius);
+// Initialize on load
+updateRadius();
+    </script>
+</body>
+</html>
+<!--  -->

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>JavaScript Image Slideshow</title>
+</head>
+<body>
+    <div class="slideshow">
+        <img src="image_1.jpg" id="slide">
+        <button onclick="prev()">Prev</button>
+        <button onclick="next()">Next</button>
+    </div>  
+    <script>
+        const images = ["image_1.jpg", "image_2.jpg", "image_3.jpg"]
+        let index = 0;
+        function show() {
+            document.getElementById("slide").src = images[index];
+        }
+        function next() {
+            index = (index + 1) % images.length;
+            show();
+        }
+        function prev() {
+            index = (index - 1 + images.length) % images.length;
+            show();
+        }
+    </script>
+</body>
+</html>

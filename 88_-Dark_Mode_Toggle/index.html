@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset */
+        * {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+        }
+/* CSS VARIABLES (Light mode defaults) */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222222;
+    --button-bg: #4caf50;
+    --button-text: #ffffff;
+}
+/* DARK MODE VARIABLES */
+.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #f5f5f5;
+    --button-bg: #333333;
+    --button-text: #ffffff;
+}
+/* Apply variables */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    transition: background 0.3s ease, color 0.3s ease; 
+}
+/* Title */
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+/* Button */
+#toggleBtn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 20px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#toggleBtn:hover {
+    opacity: 0.9;
+}
+/* Example text */
+.info {
+    text-align: center;
+    margin-top: 20px;
+}
+    </style>
+    <title>Dark Mode Toggle</title>
+</head>
+<body>
+    <h1 class="title">Dark Mode Toggle</h1>
+    <!-- Toggle Button -->
+     <button id="toggleBtn">Toggle Dark Mode</button>
+     <p class="info">This is an example paragraph to show theme changes.</p>  
+    <script>
+        // Select the toggle button
+        const toggleBtn = document.getElementById("toggleBtn");
+        // Load saved theme on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+            }
+        });
+        // Toggle theme on click
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+         // Save the current theme
+         if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+         } else {
+            localStorage.setItem("theme", "light");
+         }    
+        });      
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .board {
+            display: flex;
+            gap: 20px;
+        }
+        .COLUMN {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            width: 30%;
+        }
+        .task-list {
+            min-height: 200px;
+            padding: 10px;
+            background: #eee;
+            border-radius: 6px;
+        }
+        .task {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: grab;
+        }
+        .addTaskBtn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            background:#4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+    <title>Kanban Board (Drag & Drop)</title>
+</head>
+<body>
+    <h1 class="title">Kanban Board</h1>
+    <div class="board">
+        <!-- Columns -->
+         <div class="column" data-status="todo">
+            <h2>To Do</h2>
+            <div class="task-list" id="todo"></div>
+            <button class="addTaskBtn" data-status="todo">+ Add Task</button>
+         </div>
+         <div class="column" data-status="doing">
+            <h2>Doing</h2>
+            <div class="task-list" id="doing"></div>
+            <button class="addTaskBtn" data-status="doing">+ Add Task</button>
+         </div>
+         <div class="column" data-status="done">
+            <h2>Done</h2>
+            <div class="task-list" id="done"></div>
+            <button class="addTaskBtn" data-status="done">+ Add Task</button>
+         </div>
+    </div>   
+    <script>
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem("kanbanTasks")) || [];
+        // Save tasks
+        function saveTasks() {
+            localStorage.setItem("kanbanTasks", JSON.stringify(tasks));
+        }
+        // Render tasks into columns 
+        function renderTasks() {
+            document.querySelectorAll(".task-list").forEach(list => list.innerHTML = "");
+            tasks.forEach(task => {
+                const div = document.createElement("div");
+                div.className = "task";
+                div.draggable = true;
+                div.textContent = task.text;
+                div.dataset.id = task.id;
+                div.addEventListener("dragstart", dragStart);
+                document.getElementById(task.status).appendChild(div);
+            });
+        }
+        // Add task 
+        document.querySelectorAll(".addTaskBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const text = prompt("Task name:")
+                if (!text) return;
+                tasks.push({
+                    id: Date.now(),
+                    text,
+                    status: btn.dataset.status
+                });
+                saveTasks();
+                renderTasks();
+            });
+        });
+        // Drag events
+        function dragStart(e) {
+            e.dataTransfer.setData("id", e.target.dataset.id);
+        }
+        document.querySelectorAll(".task-list").forEach(list => {
+            list.addEventListener("dragover", e => e.preventDefault());
+            list.addEventListener("drop", e => {
+                const id = e.dataTransfer.getData("id");
+                const task = tasks.find(t => t.id == id);
+                task.status = list.id;
+                saveTasks();
+                renderTasks();
+            });
+        });
+        // Initial render
+        renderTasks();
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <title> Daily Mood Tracker</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-face-smile"></i> Mood Tracker</h1>
+    <button onclick="setMood('😊')">😊</button>
+    <button onclick="setMood('😐')">😐</button>
+    <button onclick="setMood('😢')">😢</button>
+    <p id="saved"></p>    
+    <script>
+    const mood = localStorage.getItem("mood");
+    if (mood) saved.innerText = "Today's mood: " + mood;
+    function setMood(m) {
+        localStorage.setItem("mood", m);
+        saved.innerText = "Today's mood: " + m;
+    }    
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

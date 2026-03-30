@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+background: #0d1117;
+color: #eee;
+font-family: system-ui, sans-serif;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+gap: 32px;
+min-height: 100vh;
+margin: 0;
+}
+h1 {
+color: #58a6ff;
+margin-bottom: 8px;
+}
+.preview {
+font-size: 48px;
+font-weight: 700;
+text-align: center;
+transition: text-shadow 0.1s ease;
+}
+.controls {
+display: flex;
+flex-direction: column;
+gap: 20px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+width: 100%;
+max-width: 500px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.control-group {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+label  {
+font-size: 14px;
+color: #9da5b4;
+}
+input[type="range"] {
+width: 100%;
+}
+input[type="color"] {
+width: 60px;
+height: 34px;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+}
+.css-output {
+background: #161b22;
+padding: 16px;
+border-radius: 8px;
+font-family: monospace;
+font-size: 14px;
+color: #79c0ff;
+user-select: all;
+max-width: 500px;
+width: 100%;
+text-align: center;
+}
+    </style>
+    <title> Text Shadow</title>
+</head>
+<body>
+    <h1>Text Shadow Playground</h1>
+    <div class="preview" id="previewText">
+        Shadow Preview
+    </div>
+    <div class="controls">
+        <div class="control-group">
+        <label for="xRange">X Offset</label>
+        <input type="range" id="xRange" min="-50" max="50" value="10">
+        </div> 
+        <div class="control-group">
+        <label for="yRange">Y Offset</label>
+        <input type="range" id="yRange" min="-50" max="50" value="10">
+        </div>
+        <div class="control-group">
+        <label for="blurRange">Blur Radius</label>
+        <input type="range" id="blurRange" min="0" max="50" value="20">
+        </div>
+        <div class="control-group">
+        <label for="colorPicker">Shadow Color</label>
+        <input type="color" id="colorPicker" min="0" max="50" value="#000000">
+        </div>      
+    </div>
+    <div class="css-output" id="cssOutput">
+        text-shadow: 10px 10px 20px #000000;
+    </div>  
+    <script>
+    const preview = document.getElementById('previewText');
+    const cssOutput = document.getElementById('cssOutput');
+    const xRange = document.getElementById('xRange');
+    const yRange = document.getElementById('yRange');
+    const blurRange = document.getElementById('blurRange');
+    const colorPicker = document.getElementById('colorPicker');
+    function updateShadow() {
+     const x = xRange.value;
+      const y = yRange.value;
+      const blur = blurRange.value;
+      const color = colorPicker.value;
+      const shadow = `${x}px ${y}px ${blur}px ${color}`;
+      preview.style.textShadow = shadow;
+      cssOutput.textContent = `text-shadow: ${shadow};`;
+    }
+    xRange.addEventListener('input', updateShadow);
+    yRange.addEventListener('input', updateShadow);
+    blurRange.addEventListener('input', updateShadow);
+   colorPicker.addEventListener('input', updateShadow);
+    // Initalize
+    updateShadow();
+    </script>
+</body>
+</html>

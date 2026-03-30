@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+margin: 0;
+font-family: system-ui, sans-serif;
+background: #0d1117;
+color: #eee;
+display: flex;
+justify-content: center;
+align-items: center;
+padding-top: 40px;
+}
+.container {
+width: 360px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+h1 {
+margin-top: 0;
+text-align: center;
+font-size: 22px;
+color: #58a6ff;
+}
+.sliders {
+margin-bottom: 20px;
+}
+.slider-group {
+margin-bottom: 16px;
+ }
+        Label {
+display: block;
+margin-bottom: 6px;
+font-weight: 600;
+}
+input[type="range"] {
+width: 100%;
+}
+.preview {
+width: 100%;
+height: 120px;
+border-radius: 8px;
+background: #787878;
+margin-bottom: 20px;
+border: 2px solid #30363d;
+}
+.output p {
+margin: 6px 0;
+font-size: 14px;
+}
+button {
+width: 100%;
+padding: 10px;
+background: #238636;
+border: none;
+border-radius: 6px;
+color: white;
+font-size: 15px;
+cursor: pointer;
+transition: background 0.2s ease;
+}
+button:hover {
+background: #2ea043
+}
+    </style>
+    <title>Color Mixer</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Mixer Playground</h1>
+        <div class="sliders">
+            <div class="slider-group">
+                <label for="red">Red</label>
+                <input type="range" id="red" min="0" max="255" value="120">
+                <span id="redValue">120</span>
+            </div> 
+            <div class="slider-group">
+                <label for="green">Green</label>
+                <input type="range" id="green" min="0" max="255" value="120">
+                <span id="greenValue">120</span>
+            </div> 
+            <div class="slider-group">
+                <label for="blue">Blue</label>
+                <input type="range" id="blue" min="0" max="255" value="120">
+                <span id="blueValue">120</span>
+            </div> 
+        </div>
+        <div class="preview" id="previewBox"></div>
+        <div class="output">
+            <p><strong>RGB:</strong><span id="rgbText"> rgb(120, 120, 120)</span></p>
+            <p><strong>HEX:</strong><span id="hexText"> #787878</span></p>
+        </div>
+        <button id="copyBtn">Copy HEX</button>    
+    </div>
+    <script>
+// Get elements
+const red = document.getElementById("red");
+const green = document.getElementById("green");
+const blue = document.getElementById("blue");
+const redValue = document.getElementById("redValue");
+const greenValue = document.getElementById("greenValue");
+const blueValue = document.getElementById("blueValue");
+const previewBox = document.getElementById("previewBox");
+const rgbText = document.getElementById("rgbText");
+const hexText = document.getElementById("hexText");
+const copyBtn = document.getElementById("copyBtn");
+// Convert RGB → HEX
+function rgbToHex(r, g, b) {
+    return (
+        "#" + 
+        [r, g, b]
+        .map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+        })
+        .join("")
+    );
+}
+// Update UI
+function updateColor() {
+const r = Number(red.value);
+const g = Number(green.value);
+const b = Number(blue.value);
+ // Update labels
+redValue.textContent = r;
+greenValue.textContent = g;
+blueValue.textContent = b;
+// Build color strings
+const rgb = `rgb(${r}, ${g}, ${b})`;
+const hex = rgbToHex(r, g, b);
+ // Update preview
+ previewBox.style.background = rgb;
+  // Update text
+  rgbText.textContent = rgb;
+  hexText.textContent = hex;
+}
+// Copy HEX to clipboard
+copyBtn.addEventListener("click", () => {
+  navigator.clipboard.writeText(hexText.textContent);
+  copyBtn.textContent = "Copied!";
+  setTimeout(() => (copyBtn.textContent = "Copy HEX"), 1200);  
+});
+// Event listeners
+[red, green, blue].forEach(slider => {
+    slider.addEventListener("input", updateColor)
+});
+// Initialize
+updateColor();
+    </script>
+</body>
+</html>

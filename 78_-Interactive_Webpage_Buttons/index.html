@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Interactive Webpage Buttons</title>
+</head>
+<body>
+    <h1 id="title">Hello World</h1>
+    <button onclick="changeColor()">Change Color</button>
+    <button onclick="changeText()">Change Text</button>
+    <button onclick="hideTitle()">Change Title</button>
+    
+
+    <script>
+        function changeColor() {
+            document.getElementById("title").style.color = "blue";
+        }
+        function changeText() {
+            document.getElementById("title").innerText = "You changed me!";
+        }
+        function hideTitle() {
+            document.getElementById("title").style.display = "none";
+        }
+    </script>
+</body>
+</html>

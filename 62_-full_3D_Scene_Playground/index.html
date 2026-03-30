@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      /* --- Layout --- */
+      body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        height: 100vh;
+        background: radial-gradient(circle at top, #1b1f3b 0%, #05060a 60%, #000 100%);
+        color: #eee;
+}
+/* Sidebar styling */
+.sidebar { 
+    background: #0b0c10;
+    border-right: 1px solid #222;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.section-title {
+margin-top: 24px;   
+font-size: 15px;
+text-transform: uppercase;
+letter-spacing: 0.06em;
+color: #9fa6ff;
+}
+.control-group { 
+margin-bottom: 16px;
+}
+label { 
+font-weight: 600;
+display: block;
+margin-bottom: 6px;
+font-size: 13px;
+}
+input[type="range"], 
+input[type="color"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 4px;
+    background: #222;
+    outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width:14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #9fa6ff;
+   cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+    width:14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #9fa6ff;
+   cursor: pointer;
+   border: none;
+}
+.value { 
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
+}
+.toggle-row {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 13px;
+margin-bottom: 6px;
+}
+.preview {
+position: relative;
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 900px; /* default, overridden by JS */
+background: transparent;
+}
+/* --- Scene container (world) --- */
+.scene {
+position: relative;
+width: 800px;
+height: 500px;
+transform-style: preserve-3d;
+transition: transform 0.2s ease;
+}
+ /* --- Grid floor --- */
+ .grid-floor {
+position: absolute;
+width: 2000px;
+height: 2000px;
+top: 50%;
+left: 50%;
+transform-style: preserve-3d;
+transform: translate(-50%, 50%) rotateX(90deg) translateZ(-200px);
+opacity: 0.9;
+pointer-events:  none;
+}
+.grid-floor::before {
+content: "";
+position: absolute;
+inset: 0;
+opacity: 0.6;
+background-size: 60px 60px;
+background-image:
+linear-gradient(var(--grid-color, #00ffff) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid-color, #00ffff) 1px, transparent 1px);
+}
+.grid-floor::after {
+     /* fade into distance */
+content: "";
+position: absolute;
+inset: 0;
+background: linear-gradient(to top, #000 0%, transparent 40%);
+opacity: 0.9;
+pointer-events: none;
+}
+ /* --- Base object style --- */
+ .object {
+    position: absolute;
+    transform-style: preserve-3d;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+ }
+  /* Cube A (centerpiece) */
+.cube-a {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #4a90e2, #9b59b6);
+}
+/* Cube B (left, deeper) */
+.cube-b {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #16a085, #27ae60);
+}
+/* Panel (right) */
+.panel {
+    width: 160px;
+    height: 100px;
+    background: linear-gradient(135deg, #e67e22, #f1c40f);
+}
+/* Floating card (upper) */
+.card {
+    width: 200px;
+    height: 70px;
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+}
+ /* Ground helper object (optional) */
+.ground-helper {
+    width: 260px;
+    height: 20px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+    opacity: 0.6;
+}
+.hidden {
+    display: none;
+}  
+    </style>
+    <title>full 3D Scene Playground</title>
+</head>
+<body>
+     <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>3D Scene Playground</h2>
+     <!-- CAMERA CONTROLS -->
+      <div class="section-title">Camera</div>
+      <div class="control-group">
+        <label>Orbit Y (around scene)</label> <input type="range" id="camOrbitY" min="-180" max="180" value="0"> <div class="value" id="camOrbitYValue">0°</div> </div> 
+        <div class="control-group"> 
+        <label>Orbit X (tilt up/down)</label> 
+        <input type="range" id="camOrbitX" min="-60" max="60" value="-20"> 
+        <div class="value" id="camOrbitXValue">-20°</div> </div>
+        <div class="control-group"> 
+        <label>Camera Distance</label> 
+        <input type="range" id="camDistance" min="400" max="1400" value="800"> 
+        <div class="value" id="camDistanceValue">800</div> </div>
+        <div class="control-group"> 
+        <label>Camera Height</label> 
+        <input type="range" id="camHeight" min="-200" max="300" value="80"> 
+        <div class="value" id="camHeightValue">80</div> </div>
+        <div class="control-group"> 
+        <label>Perspective</label> 
+        <input type="range" id="perspectiveSlider" min="400" max="2000" value="900"> 
+        <div class="value" id="perspectiveValue">900px</div> </div>
+        <!-- LIGHTING CONTROLS -->
+         <div class="section-title">Lighting</div>
+         <div class="control-group">
+            <label>Light Angle X (left/right)</label>
+            <input type="range" id="lightAngleX" min="-180" max="180" value="-40">
+            <div class="value" id="lightAngleXValue">-40°</div>
+         </div>
+         <div class="control-group">
+            <label>Light Angle Y (up/down)</label>
+            <input type="range" id="lightAngleY" min="-90" max="90" value="30">
+            <div class="value" id="lightAngleYValue">30°</div>
+         </div>
+         <div class="control-group">
+            <label>Light Intensity</label>
+            <input type="range" id="lightIntensity" min="0" max="100" value="70">
+            <div class="value" id="lightIntensityValue">0.70</div>
+         </div> 
+         <div class="control-group">
+            <label>Ambient Light</label>
+            <input type="range" id="ambientLight" min="0" max="100" value="30">
+            <div class="value" id="ambientLightValue">0.30</div>
+         </div>
+         <div class="control-group">
+            <label>Grid Color</label>
+            <input type="color" id="gridColor" value="#00ffff">
+         </div>
+<!-- OBJECT VISIBILITY -->
+<div class="section-title">Objects</div>
+<div class="control-group">
+    <div class="toggle-row">
+        <input type="checkbox" id="toggleCubeA" checked>
+        <span>Cube A (center)</span>
+    </div>
+    <div class="toggle-row">
+        <input type="checkbox" id="toggleCubeB" checked>
+        <span>Cube B (left)</span>
+    </div>
+    <div class="toggle-row">
+        <input type="checkbox" id="togglePanel" checked>
+        <span>Panel (right)</span>
+    </div>
+    <div class="toggle-row">
+        <input type="checkbox" id="toggleCard" checked>
+        <span>Floating Card (top)</span>
+    </div>
+    <div class="toggle-row">
+        <input type="checkbox" id="toggleGroundHelper" checked>
+        <span>Ground Helper</span>
+    </div>
+  </div>
+</div>
+<!-- PREVIEW AREA -->
+ <div class="preview" id="previewArea">
+    <div class="scene" id="scene">
+    <!-- Grid floor -->
+     <div class="grid-floor" id="gridFloor"></div>
+      <!-- Objects -->
+<div class="object cube-a" id="cubeA">Cube A</div>
+<div class="object cube-b" id="cubeB">Cube B</div>
+<div class="object panel" id="panel">Panel</div>
+<div class="object card" id="card">Floating Card</div>
+<div class="object ground-helper" id="groundHelper"></div>  
+    </div>
+ </div>
+    <script>
+        // ------------------------------------------------------------
+    // DOM REFERENCES
+    // ------------------------------------------------------------
+    // Scene and preview
+    const preview = document.getElementById("previewArea");
+    const scene = document.getElementById("scene");
+    const gridFloor = document.getElementById("gridFloor");
+    // Objects
+    const cubeA = document.getElementById("cubeA");
+    const cubeB = document.getElementById("cubeB");
+    const panel = document.getElementById("panel");
+    const card = document.getElementById("card");
+    const groundHelper = document.getElementById("groundHelper");
+    // Camera controls
+    const camOrbitY = document.getElementById("camOrbitY");
+    const camOrbitX = document.getElementById("camOrbitX");
+    const camDistance = document.getElementById("camDistance");
+    const camHeight = document.getElementById("camHeight");
+    const perspectiveSlider = document.getElementById("perspectiveSlider"); 
+    const camOrbitYValue = document.getElementById("camOrbitYValue");
+    const camOrbitXValue = document.getElementById("camOrbitXValue");
+    const camDistanceValue = document.getElementById("camDistanceValue");
+    const camHeightValue = document.getElementById("camHeightValue");
+    const perspectiveValue = document.getElementById("perspectiveValue");
+// Lighting controls
+    const lightAngleX = document.getElementById("lightAngleX");
+    const lightAngleY = document.getElementById("lightAngleY");
+    const lightIntensity = document.getElementById("lightIntensity");
+    const ambientLight = document.getElementById("ambientLight");
+    const gridColorInput = document.getElementById("gridColor");
+    const lightAngleXValue = document.getElementById("lightAngleXValue");
+    const lightAngleYValue = document.getElementById("lightAngleYValue");
+    const lightIntensityValue = document.getElementById("lightIntensityValue");
+    const ambientLightValue = document.getElementById("ambientLightValue");
+// Object visibility toggles
+    const toggleCubeA = document.getElementById("toggleCubeA");
+    const toggleCubeB = document.getElementById("toggleCubeB");
+    const togglePanel = document.getElementById("togglePanel");
+    const toggleCard = document.getElementById("toggleCard");
+    const toggleGroundHelper = document.getElementById("toggleGroundHelper");
+// ------------------------------------------------------------
+    // CAMERA & SCENE TRANSFORM
+    // ------------------------------------------------------------
+    /**
+     * updateCamera()
+     * --------------
+     * Simulates a camera orbiting around the scene by applying
+     * transforms to the scene container. We treat the scene as
+     * the "world" and move/rotate it relative to the viewer.
+     */
+    function updateCamera() {
+      const orbitY = Number(camOrbitY.value);
+      const orbitX = Number(camOrbitX.value);
+      const distance = Number(camDistance.value);
+      const height = Number(camHeight.value);
+      const perspective = Number(perspectiveSlider.value);
+      // Update labels
+      camOrbitYValue.textContent = orbitY + "°";
+      camOrbitXValue.textContent = orbitX + "°";
+      camDistanceValue.textContent = distance;
+      camHeightValue.textContent = height;
+      perspectiveValue.textContent = perspective + "px";
+ // Apply perspective to the preview container
+      preview.style.perspective = perspective + "px";
+
+      /**
+       * We simulate the camera by:
+       * - Moving the scene away from the viewer (translateZ negative)
+       * - Raising/lowering it (translateY)
+       * - Rotating around X and Y to simulate orbit
+       */
+      scene.style.transform = `
+        translateY(${height}px)
+        translateZ(${-distance}px)
+        rotateX(${orbitX}deg)
+        rotateY(${orbitY}deg)
+      `;
+    }
+     // ------------------------------------------------------------
+    // OBJECT POSITIONING
+    // ------------------------------------------------------------
+    /**
+     * positionObjects()
+     * -----------------
+     * Places each object in the world with a base transform.
+     * These are like "default" world positions.
+     */
+    function positionObjects() {
+      // Cube A: center, slightly above grid
+      cubeA.style.transform = `
+        translate3d(-60px, -80px, 0px)
+        rotateY(25deg)
+        rotateX(-10deg)
+      `;
+      // Cube B: left, deeper into the scene
+      cubeB.style.transform = `
+        translate3d(-220px, -60px, -260px)
+        rotateY(-20deg)
+        rotateX(5deg)
+      `;
+       // Panel: right side, mid depth
+      panel.style.transform = `
+        translate3d(220px, -40px, -160px)
+        rotateY(-25deg)
+        rotateX(-5deg)
+      `;
+      // Floating card: above center, closer to camera
+      card.style.transform = `
+        translate3d(40px, -200px, 60px)
+        rotateY(10deg)
+        rotateX(15deg)
+      `;
+      // Ground helper: near center, low
+      groundHelper.style.transform = `
+        translate3d(-130px, -10px, 40px)
+        rotateX(-5deg)
+      `;
+    }
+        // ------------------------------------------------------------
+    // LIGHTING SIMULATION
+    // ------------------------------------------------------------
+    /**
+     * updateLighting()
+     * ----------------
+     * CSS doesn't have real lights, so we fake lighting by:
+     * - Adjusting box-shadow intensity and direction
+     * - Slightly changing background brightness
+     * based on a "light direction" and intensity.
+     */
+    function updateLighting() {
+      const angleX = Number(lightAngleX.value); // left/right
+      const angleY = Number(lightAngleY.value); // up/down
+      const intensity = Number(lightIntensity.value) / 100;
+      const ambient = Number(ambientLight.value) / 100;
+// Update labels
+      lightAngleXValue.textContent = angleX + "°";
+      lightAngleYValue.textContent = angleY + "°";
+      lightIntensityValue.textContent = intensity.toFixed(2);
+      ambientLightValue.textContent = ambient.toFixed(2);
+      // Convert angles to a simple directional vector
+      const radX = angleX * Math.PI / 180;
+      const radY = angleY * Math.PI / 180;
+      const dx = Math.cos(radX);
+      const dz = Math.sin(radX);
+      const dy = -Math.sin(radY); // negative so positive angle feels like light from above
+// Scale shadow offset by intensity
+      const shadowScale = 40 * intensity;
+      const offsetX = -dx * shadowScale;
+      const offsetY = (Math.abs(dy) + 0.3) * shadowScale; // always some downward shadow
+      // Shadow blur and alpha based on intensity
+      const blur = 50 + 40 * intensity;
+      const alpha = 0.4 + 0.3 * intensity;
+      const shadow = `${offsetX}px ${offsetY}px ${blur}px rgba(0,0,0,${alpha})`;
+      // Apply to all objects
+      [cubeA, cubeB, panel, card, groundHelper].forEach(obj => {
+        obj.style.boxShadow = shadow;
+      });
+ // Slight ambient effect: dim or brighten backgrounds
+      const ambientFactor = 0.4 + ambient * 0.6;
+      cubeA.style.filter = `brightness(${ambientFactor})`;
+      cubeB.style.filter = `brightness(${ambientFactor})`;
+      panel.style.filter = `brightness(${ambientFactor})`;
+      card.style.filter = `brightness(${ambientFactor})`;
+      groundHelper.style.filter = `brightness(${ambientFactor})`;      
+    }
+    // ------------------------------------------------------------
+    // GRID COLOR
+    // ------------------------------------------------------------
+    /**
+     * updateGridColor()
+     * -----------------
+     * Sets a CSS custom property used by the grid floor
+     * to control the neon line color.
+     */
+    function updateGridColor() {
+      const color = gridColorInput.value;
+      gridFloor.style.setProperty("--grid-color", color);
+    }
+// ------------------------------------------------------------
+    // OBJECT VISIBILITY
+    // ------------------------------------------------------------
+    function updateVisibility() {
+      cubeA.classList.toggle("hidden", !toggleCubeA.checked);
+      cubeB.classList.toggle("hidden", !toggleCubeB.checked);
+      panel.classList.toggle("hidden", !togglePanel.checked);
+      card.classList.toggle("hidden", !toggleCard.checked);
+      groundHelper.classList.toggle("hidden", !toggleGroundHelper.checked);
+    }
+    // ------------------------------------------------------------
+    // EVENT LISTENERS
+    // ------------------------------------------------------------
+
+    // Camera controls
+    [camOrbitY, camOrbitX, camDistance, camHeight, perspectiveSlider]
+      .forEach(el => el.addEventListener("input", updateCamera));
+
+    // Lighting controls
+    [lightAngleX, lightAngleY, lightIntensity, ambientLight]
+      .forEach(el => el.addEventListener("input", updateLighting));
+
+    // Grid color
+    gridColorInput.addEventListener("input", updateGridColor);
+
+    // Visibility toggles
+    [toggleCubeA, toggleCubeB, togglePanel, toggleCard, toggleGroundHelper]
+      .forEach(el => el.addEventListener("change", updateVisibility));
+// ------------------------------------------------------------
+    // INITIALIZE SCENE
+    // ------------------------------------------------------------
+    positionObjects();
+    updateCamera();
+    updateLighting();
+    updateGridColor();
+    updateVisibility();
+</script>
+</body>
+</html>

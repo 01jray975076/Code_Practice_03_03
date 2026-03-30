@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h2>To-Do List</h2>
+    <input id="task" placeholder="New text">
+    <button onclick="addTask()">Add</button>   
+    <ul id="list"></ul>
+     <button onclick="clearAll()">Clear All</button>   
+    <script src="script.js"></script>
+    <script>
+        // Create a task Array
+        let tasks = [];
+        // Function to display the list
+        function displayTask() {
+            let html = "";
+            for (let i = 0; i < tasks.length; i++) {
+                html += "<li>" + tasks[i] + " <button onclick='removeTask(" + i + ")'>x</button></li>";
+            }
+            document.getElementById("list").innerHTML = html;
+        }
+        // Function to Add a task
+        function addTask() {
+            let taskInput = document.getElementById("task");
+            let text = taskInput.value;
+            if (text === "") {
+                return;
+            }
+            tasks.push(text);
+            taskInput.value = "";
+            saveTasks();
+            displayTask();
+        }
+        // Function to Remove a task
+        function removeTask(i) {
+            tasks.splice(i, 1);
+            saveTasks();
+            displayTask();
+        }
+         // Function to Remove a task
+        function removeTask(i) {
+        tasks.splice(i, 1);
+        saveTasks();
+        displayTask();
+        }
+        // Function to Clear a task
+        function clearAll() {
+            tasks = [];
+            saveTasks();
+            displayTask();
+        }
+        // Function to Save a Task
+        function saveTasks() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+            //Note: To store arrays in localStorage, we convert them to text using JSON.stringify().
+        }
+        // Function to Load the Tasks
+        function loadTasks() {
+        let saved = localStorage.getItem("tasks");
+        if (saved !== null) {
+            tasks = JSON.parse(saved);
+            //Note:To load arrays, we convert them back using JSON.parse().
+        }
+    }
+    // Load and display task when page loads
+    loadTasks();
+    displayTask();
+    </script>
+</body>
+</html>

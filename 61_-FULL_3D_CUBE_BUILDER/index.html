@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+     body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+}
+/* Sidebar styling */
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="text"],
+     input[type="range"],
+     input[type="color"],
+     input[type="number"],
+     select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+.preview {
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 800px;
+overflow: hidden;
+}
+.cube {
+position: relative;
+width: 200px;
+height: 200px;
+transform-style: preserve-3d;
+transition: all 0.3s ease;
+}
+.face {
+position: absolute;
+width: 200px;
+height: 200px;
+background: #4a90e2;
+border: 2px solid #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 22px;
+font-weight: bold;
+color: white;
+backface-visibility: hidden;
+}
+/* Position each cube face */
+.front { transform: rotateY(0deg) translateZ(100px);}
+.back { transform: rotateY(180deg) translateZ(100px);}
+.right { transform: rotateY(90deg) translateZ(100px);}
+.left { transform: rotateY(-90deg) translateZ(100px);}
+.top { transform: rotateX(90deg) translateZ(100px);}
+.bottom { transform: rotateX(-90deg) translateZ(100px);} 
+    </style>
+    <title>FULL 3D CUBE BUILDER</title>
+</head>
+<body>
+    <!-- SIDEBAR -->
+     <div class="sidebar">
+        <h2>3D Cube Builder</h2>
+        <!-- TRANSFORM CONTROLS -->
+         <div class="control-group"> <label>Rotate X</label> <input type="range" id="rotateX" min="-180" max="180" value="0"> <div class="value" id="rotateXValue">0°</div> </div>
+         <div class="control-group"> <label>Rotate Y</label> <input type="range" id="rotateY" min="-180" max="180" value="0"> <div class="value" id="rotateYValue">0°</div> </div>
+         <div class="control-group"> <label>Rotate Z</label> <input type="range" id="rotateZ" min="-180" max="180" value="0"> <div class="value" id="rotateZValue">0°</div> </div>
+         <div class="control-group"> <label>Translate Z</label> <input type="range" id="translateZ" min="-300" max="300" value="0"> <div class="value" id="translateZValue">0°</div> </div>
+         <div class="control-group"> <label>Perspective</label> <input type="range" id="perspective" min="200" max="2000" value="800"> <div class="value" id="perspectiveValue">800px</div> </div>
+        <hr>
+        <!-- FACE CONTROLS -->
+        <h2>Face Controls</h2>
+       <!-- Template repeated for all 6 faces -->
+        <div id="faces"></div>
+     </div>
+     <!-- PREVIEW -->
+     <div class="preview" id="previewArea">
+        <div class="cube" id="cube">
+            <div class="face front" data-face="front">Front</div>
+            <div class="face back" data-face="back">Back</div>
+            <div class="face right" data-face="right">Right</div>
+            <div class="face left" data-face="left">Left</div>
+            <div class="face top" data-face="top">Top</div>
+            <div class="face bottom" data-face="bottom">Bottom</div>
+        </div>
+     </div>  
+    <script>
+/* ----------------------------------------------------------
+   FACE CONFIGURATION
+---------------------------------------------------------- */
+const faceList = [
+    { name: "Front", key: "front" },
+    { name: "Back", key: "back" },
+    { name: "Left", key: "left" },
+    { name: "Right", key: "right" },
+    { name: "Top", key: "top" },
+    { name: "Bottom", key: "bottom" },
+];
+const facesContainer = document.getElementById("faces");
+/* Build UI for each face dynamically */
+faceList.forEach(face => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "control-group";
+    wrapper.innerHTML = `
+    <label>${face.name} Face</label>
+    <select class="face-type" data-face="${face.key}">
+        <option value="text">Text</option>
+        <option value="color">Color</option>
+        <option value="number">Number</option>
+        <option value="image">Image</option>
+    </select>
+    <input class="face-input" data-face="${face.key}" type="text" value="${face.name}">
+    `;
+    facesContainer.appendChild(wrapper);
+});
+/* ----------------------------------------------------------
+   TRANSFORM CONTROLS
+---------------------------------------------------------- */
+const cube = document.getElementById("cube");
+const preview = document.getElementById("previewArea");
+const rotateX = document.getElementById("rotateX");
+const rotateY = document.getElementById("rotateY");
+const rotateZ = document.getElementById("rotateZ");
+const translateZ = document.getElementById("translateZ");
+const perspective = document.getElementById("perspective");
+const rotateXValue = document.getElementById("rotateXValue");
+const rotateYValue = document.getElementById("rotateYValue");
+const rotateZValue = document.getElementById("rotateZValue");
+const translateZValue = document.getElementById("translateZValue");
+const perspectiveValue = document.getElementById("perspectiveValue");
+/* Update cube transform */
+function updateCubeTransform() {
+    const x = Number(rotateX.value);
+    const y = Number(rotateY.value);
+    const z = Number(rotateZ.value);
+    const tz = Number(translateZ.value);
+    const p = Number(perspective.value);
+    rotateXValue.textContent = x + "°";
+    rotateXValue.textContent = y + "°";
+    rotateXValue.textContent = z + "°";
+   translateZValue.textContent = tz + "px";
+   perspectiveValue.textContent = p + "px";
+   preview.style.perspective = p + "px";
+   cube.style.transform = `
+   translateZ(${tz}px)
+   rotateX(${x}deg)
+   rotateY(${y}deg)
+   rotateZ(${z}deg)
+   `;
+}
+/* ----------------------------------------------------------
+   FACE CONTENT UPDATING
+---------------------------------------------------------- */
+function updateFaceContent(faceKey, type, value) {
+  const faceEl = document.querySelector(`.face.${faceKey}`);
+  if (!faceEl) return;
+  switch (type) {
+    case "color":
+        faceEl.style.background = value;
+        faceEl.textContent = "";
+        faceEl.style.backgroundSize = "cover";
+        break;
+        case "color":
+        faceEl.style.background = "#4a90e2";
+        faceEl.textContent = value;
+        break;
+        case "text":
+        faceEl.style.background = "#4a90e2";
+        faceEl.textContent = value;
+        break;
+        case "image":
+        faceEl.style.background = `url('${value}') center/cover no-repeat`;
+        faceEl.textContent = "";
+        break;  
+    }  
+}
+/* Attach listeners to face controls */
+document.querySelectorAll(".face-type").forEach(select => {
+    select.addEventListener("change", e => {
+       const faceKey =   e.target.dataset.face;
+       const input = document.querySelector(`.face-input[data-face="${faceKey}"]`);
+       updateFaceContent(faceKey, e.target.value, input.value);
+    });  
+});
+document.querySelectorAll(".face-input").forEach(input => {
+    input.addEventListener("input", e => {
+       const faceKey =   e.target.dataset.face;
+       const type = document.querySelector(`.face-type[data-face="${faceKey}"]`).value;
+       updateFaceContent(faceKey, type, e.target.value);
+    });  
+});
+/* ----------------------------------------------------------
+   INITIALIZE
+---------------------------------------------------------- */
+updateCubeTransform();
+document.querySelectorAll(".face-input").forEach(input => {
+    const faceKey = input.dataset.face;
+    updateFaceContent(faceKey, "text", input.value);
+}); 
+/* Attach transform listeners */
+[
+    rotateX, rotateY, rotateZ,
+    translateZ, perspective
+].forEach(el => el.addEventListener("input", updateCubeTransform));
+
+
+    </script>
+</body>
+</html>

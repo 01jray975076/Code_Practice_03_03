@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+body {
+margin: 0;
+font-family: system-ui, sans-serif;
+background: #0d1117;
+color: #eee;
+display: flex;
+justify-content: center;
+padding-top: 40px;
+}
+.container {
+width: 420px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+ h1 {
+margin-top: 0;
+text-align: center;
+color: #58a6ff;
+}
+.control-group { 
+margin-bottom: 16px;
+}
+label { 
+font-weight: 600;
+display: block;
+margin-bottom: 6px;
+}
+input[type="color"],
+input[type="range"] {
+width: 100%;
+}
+button {
+width: 100%;
+padding: 10px;
+background: #238636;
+border: none;
+border-radius: 6px;
+color: white;
+font-size: 15px;
+margin-top: 10px;
+cursor: pointer;
+}
+button:hover {
+background: #2ea043
+}
+canvas {
+margin-top: 20px;
+background: #0d1117;
+border: 1px solid #30363d;
+border-radius: 8px;
+cursor: crosshair;
+}
+.code-output {
+margin-top: 24px;
+background: #0d1117;
+border: 1px solid #30363d;
+padding: 16px;
+border-radius: 8px;
+}
+.code-output h3 {
+margin-top: 0;
+color: #58a6ff;
+font-size: 16px;
+}
+#codeBlock {
+white-space: pre-wrap;
+font-family: "Consolas", monospace;
+font-size: 14px;
+color: #c9d1d9;
+}  
+    </style>
+    <title>Simple Drawing App</title>
+</head>
+<body>
+    <div class="container">
+    <h1>Simple Drawing App</h1>
+    <div class="controls">
+    <div class="control-group">
+        <label>Brush Size</label>
+        <input type="range" id="brushSize" min="1" max="40" value="8">
+        <span id="brushValue">8px</span>
+    </div>
+    <div class="control-group">
+        <label">Brush Color</label>
+        <input type="range" id="brushColor" value="#ff7b72">        
+    </div>
+    <button id="clearBtn">Clear Canvas</button>
+    </div>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <div class="code-output">
+        <h3>Drawing Code</h3>
+        <pre id="codeBlock"></pre>
+    </div>
+</div> 
+    <script>
+// Canvas setup
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+// Controls
+const brushSize = document.getElementById("brushSize");
+const brushValue = document.getElementById("brushValue");
+const brushColor = document.getElementById("brushColor");
+const clearBtn = document.getElementById("clearBtn");
+const codeBlock = document.getElementById("codeBlock");
+// Controls
+let drawing = false;
+let size = 8;
+let color = "#ff7b72";
+let lastX = 0;
+let lastY = 0;
+// Update brush size label
+brushSize.addEventListener("input", () => {
+    size = Number(brushSize.value);
+    brushValue.textContent = size + "px";
+    updateCodeOutput();
+});
+// Update brush color
+brushColor.addEventListener("input", () => {
+    color = brushColor.value;
+    updateCodeOutput();
+});
+// Start drawing
+canvas.addEventListener("mousedown", (e) => {
+    drawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+});
+// Stop drawing
+canvas.addEventListener("mouseup", () => drawing = false);
+canvas.addEventListener("mouseleave", () => drawing = false);
+// Draw on canvas
+canvas.addEventListener("mousemove", (e) => {
+    if (!drawing) return;
+ctx.strokeStyle = color;
+ctx.lineWidth = size;
+ctx.lineCap = "round";
+ctx.beginPath();
+ctx.moveTo(lastX, lastY);
+ctx.lineTo(e.offsetX, e.offsetY);
+ctx.stroke();
+[lastX, lastY] = [e.offsetX, e.offsetY];
+});
+// Clear canvas
+clearBtn.addEventListener("click", () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+// Update code output panel
+function updateCodeOutput() {
+const code = `
+ctx.strokeStyle = "${color}"
+ctx.lineWidth = "${size}"
+ctx.lineCap = "round";
+ctx.beginPath();
+ctx.moveTo(lastX, lastY);
+ctx.lineTo(currentX, currentY);
+ctx.stroke();
+`.trim();
+codeBlock.textContent = code;
+}
+// Initialize panel
+updateCodeOutput();
+    </script>
+</body>
+</html>

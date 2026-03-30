@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { font-family: Arial; text-align: center; padding: 40px; }
+        input { padding: 10px; width: 200px; }
+    </style>
+    <title>Unit Converter (km ↔ miles)</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-arrows-rotate"></i></h1>
+    <select id="mode">
+        <option value="km-mi">Kilometers → Miles</option>
+        <option value="mi-km">Miles → Kilometers</option>
+    </select>
+    <br><br>
+    <input id="val" placeholder="Enter value">
+    <button onclick="convert()">Convert</button>
+    <p id="out"></p>
+    <script>
+        const saved = JSON.parse(localStorage.getItem("unitMode") || '"km-mi"');
+        mode.value = saved;
+        function convert() {
+            localStorage.setItem("unitMode", JSON.stringify(mode.value));
+            let valueEl = Number(val.value);
+            if (mode.value === "km-mi") out.innerText = (valueEl * 0.621371).toFixed(2) + " miles";
+            else out.innerText = (valueEl / 0.621371).toFixed(2); + " km";
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

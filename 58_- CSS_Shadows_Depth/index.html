@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 
+      Same 2-column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: shadow box
+    */
+body { 
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100vh;
+    background: #f5f5f5;
+}
+/* Sidebar styling */
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="text"],
+     input[type="range"],
+     select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+/* Preview area */
+.preview { 
+    padding: 20px;
+    overflow-y: auto;
+}
+    .shadow-box {
+width: 260px;
+height: 260px;
+background: white;
+border-radius: 16px;
+margin: 40px auto;
+transition: all 0.25s ease;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 22px;
+font-weight: bold;
+color: #333;
+}
+/* For drop-shadow() preview */
+    .shadow-image {
+width: 200px;
+filter: none;
+transition: all 0.25s ease;
+border: 3px solid red;
+}
+    </style>
+    <title> CSS Shadows & Depth 
+</title>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+    <h2>Shadows & Depth Playground</h2>
+    <!-- SHADOW TYPE -->
+     <div class="control-group">
+        <label>Shadow Type</label>
+        <select id="shadowType">
+            <option value="box">box-shadow</option>
+            <option value="drop">filter: drop-shadow()</option>
+            <option value="multi">multiple box-shadows</option>
+        </select>
+     </div>
+     <!-- OFFSET X -->
+      <div class="control-group">
+        <label>Offset X</label>
+        <input type="range" id="offsetX" min="-50" max="50" value="0">
+        <div class="value" id="offsetXValue">0px</div>
+        </div> 
+      <!-- OFFSET Y -->
+      <div class="control-group">
+        <label>Offset Y</label>
+        <input type="range" id="offsetY" min="-50" max="50" value="20">
+        <div class="value" id="offsetYValue">20px</div>
+        </div>
+      <!-- BLUR -->
+      <div class="control-group">
+        <label>Blur Radius</label>
+        <input type="range" id="blurSlider" min="0" max="80" value="30">
+        <div class="value" id="blurValue">30px</div>
+        </div> 
+      <!-- SPREAD -->
+      <div class="control-group">
+        <label>Spread Radius</label>
+        <input type="range" id="spreadSlider" min="-20" max="40" value="0">
+        <div class="value" id="spreadValue">0px</div>
+        </div>
+      <!-- SHADOW COLOR -->
+      <div class="control-group">
+        <label>Shadow Color</label>
+        <input type="text" id="colorInput" value="rgba(0,0,0,0.25)">
+      </div>
+</div> <!-- CLOSE SIDEBAR -->
+<!-- Preview -->
+<div class="preview">
+ <h2>Shadow Preview</h2>
+    <div class="shadow-box" id="shadowBox">Box</div>
+<img class="shadow-image" id="shadowImage" 
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/512px-Placeholder_view_vector.svg.png">
+     </div>
+     <img class="shadow-image" id="shadowImage"
+src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/512px-Placeholder_view_vector.svg.png">
+
+ <script>
+    // Grab elements
+    const shadowBox = document.getElementById("shadowBox");
+    const shadowImage = document.getElementById("shadowImage");
+    const shadowType = document.getElementById("shadowType");
+    const offsetX = document.getElementById("offsetX");
+    const offsetY = document.getElementById("offsetY");
+    const blurSlider = document.getElementById("blurSlider");
+    const spreadSlider = document.getElementById("spreadSlider");
+    const colorInput = document.getElementById("colorInput");
+     // Value displays
+    const offsetXValue = document.getElementById("offsetXValue");
+    const offsetYValue = document.getElementById("offsetYValue");
+    const blurValue = document.getElementById("blurValue");
+    const spreadValue = document.getElementById("spreadValue");
+    // Update function
+    function updateShadow() {
+        // Update labels
+        offsetXValue.textContent = offsetX.value + "px";
+        offsetYValue.textContent = offsetY.value + "px";
+        blurValue.textContent = blurSlider.value + "px";
+       spreadValue.textContent = spreadSlider.value + "px";
+        const x = offsetX.value + "px"
+        const y = offsetY.value + "px"
+        const blur = blurSlider.value + "px"
+        const spread = spreadSlider.value + "px"
+        const color = colorInput.value;
+        // Build shadow string
+        const shadow = `${x} ${y} ${blur} ${spread} ${color}`;
+        // Reset both elements
+        shadowBox.style.boxShadow = "none";
+        shadowImage.style.filter = "none";
+        // Apply based on type
+        if (shadowType.value === "box") {
+            shadowBox.style.boxShadow = shadow;
+        }
+        if (shadowType.value === "drop") {
+            shadowImage.style.filter = `drop-shadow(${shadow})`;
+        }
+        if (shadowType.value === "multi") {
+            shadowBox.style.boxShadow = `
+            ${x} ${y} ${blur} ${spread} ${color}, 
+        ${x} ${y * -1}px ${blur} ${spread} rgba(0,0,0,0.15)
+            `;
+        }       
+    }
+    // Attach listeners
+    [
+        shadowType, offsetX, offsetY, blurSlider,
+        spreadSlider, colorInput].forEach(el => el.addEventListener("input", updateShadow));
+        // Initialize
+        updateShadow();                                                
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        #canvas {
+            display: block;
+            margin: auto;
+            background: white;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+        }
+    </style>
+    <title>Drawing App</title>
+</head>
+<body>
+    <h1 class="title">Drawing App</h1>
+    <div class="controls">
+        <label>Color:</label>
+        <input type="color" id="colorPicker">
+        <label>Brush Size: </label>
+        <input type="range" id="brushSize" min="1" max="30" value="5">
+        <button id="clearBtn">Clear</button>
+    </div>
+    <canvas id="canvas"></canvas>  
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d")
+        const colorPicker = document.getElementById("colorPicker");
+        const brushSize = document.getElementById("brushSize");
+        const clearBtn = document.getElementById("clearBtn");
+        // Resize canvas to full width
+        canvas.width = 800;   
+        canvas.heigth = 500;
+        let drawing = false;
+        let lastX = 0;   
+        let lastY  = 0;
+        // Start drawing
+        canvas.addEventListener("mousedown", (e) => {
+            drawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+        // Stop drawing
+        canvas.addEventListener("mouseup", () => drawing = false);
+        canvas.addEventListener("mouseout", () => drawing = false);
+        // Draw on canvas
+        canvas.addEventListener("mousemove", draw);
+        function draw(e) {
+            if (!drawing) return;
+            ctx.strokeStyle = colorPicker.value;
+            ctx.lineWidth =brushSize.value;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+        // Clear canvas
+        clearBtn.addEventListener("click", () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.heigth);
+        });
+    </script>
+</body>
+</html>

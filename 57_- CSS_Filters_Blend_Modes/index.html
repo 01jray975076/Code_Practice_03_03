@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 
+      Same 2-column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: image with filters/blend modes
+    */
+    body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+}
+/* Sidebar styling */
+.sidebar {
+     background: #fff;
+     border-right: 1px solid #ddd;
+     padding: 20px;
+     overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="range"],
+select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+ /* 
+      Image container.
+      We apply filters and blend modes to the image.
+*/
+.image-box { 
+width: 100%;
+max-width: 500px;
+border-radius: 12px;
+overflow: hidden;
+position: relative;
+}
+.image-box img {
+width: 100%;
+display: block;
+transition: all 0.2s ease;
+mix-blend-mode: normal; /* default */
+}
+/* Background layer for blend modes */
+.blend-bg {
+   position: absolute;
+   inset: 0;
+   background: linear-gradient(135deg, #ff6f61, #4a90e2);
+   z-index: -1;
+} </style>  
+    <title> CSS Filters & Blend Modes</title>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Filters & Blend Modes</h2>
+    <!-- BLUR -->
+        <div class="control-group">
+            <label>blur()</label>
+            <input type="range" id="blurSlider" min="0" max="20" value="0">
+            <div class="value" id="blurValue">0px</div>
+        </div>
+        <!-- BRIGHTNESS -->
+        <div class="control-group">
+            <label>brightness()</label>
+            <input type="range" id="brightSlider" min="0" max="300" value="100">
+            <div class="value" id="brightValue">100%</div>
+        </div>
+        <!-- CONTRAST -->
+        <div class="control-group">
+            <label>contrast()</label>
+            <input type="range" id="contrastSlider" min="0" max="300" value="100">
+            <div class="value" id="contrastValue">100%</div>
+        </div>
+        <!-- HUE ROTATE -->
+        <div class="control-group">
+            <label>hue-rotate()</label>
+            <input type="range" id="hueSlider" min="0" max="360" value="0">
+            <div class="value" id="hueValue">0°</div>
+        </div>
+        <!-- SATURATE -->
+        <div class="control-group">
+            <label>saturate()</label>
+            <input type="range" id="satSlider" min="0" max="300" value="100">
+            <div class="value" id="satValue">100%</div>
+        </div>
+        <!-- GRAYSCALE -->
+        <div class="control-group">
+            <label>grayscale()</label>
+            <input type="range" id="graySlider" min="0" max="100" value="0">
+            <div class="value" id="grayValue">0%</div>
+        </div>
+        <!-- SEPIA -->
+        <div class="control-group">
+            <label>sepia()</label>
+            <input type="range" id="sepiaSlider" min="0" max="100" value="0">
+            <div class="value" id="sepiaValue">0%</div>
+        </div>
+        <!-- INVERT -->
+        <div class="control-group">
+            <label>invert()</label>
+            <input type="range" id="invertSlider" min="0" max="100" value="0">
+            <div class="value" id="invertValue">0%</div>
+        </div>
+        <!-- BLEND MODE -->
+         <div class="control-group">
+            <label>mix-blend-mode</label>
+            <select id="blendSelect">
+                <option value="normal">normal</option>
+                <option value="multiply">multiply</option>
+                <option value="screen">screen</option>
+                <option value="overlay">overlay</option>
+                <option value="darken">darken</option>
+                <option value="lighten">lighten</option>
+                <option value="color-burn">color-burn</option>
+                <option value="color-dodge">color-dodge</option>
+                <option value="difference">difference</option>
+                <option value="exclusion">exclusion</option>
+                <option value="plus-lighter">plus-lighter</option>
+            </select>
+         </div>
+    </div>
+    <!-- Preview -->
+    <div class="preview">
+        <h2>Preview</h2>
+        <div class="blend-bg"></div>
+         <img id="image" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80">    
+    </div>
+    </div> 
+    <script>
+        // Grab image element
+        const image = document.getElementById("image");
+        // Grab controls
+        const blurSlider = document.getElementById("blurSlider");
+        const brightSlider = document.getElementById("brightSlider");
+        const contrastSlider = document.getElementById("contrastSlider");
+        const hueSlider = document.getElementById("hueSlider");
+        const satSlider = document.getElementById("satSlider");
+        const graySlider = document.getElementById("graySlider");
+        const sepiaSlider = document.getElementById("sepiaSlider");
+        const invertSlider = document.getElementById("invertSlider");
+        const blendSelect = document.getElementById("blendSelect");
+        // Value displays
+        const blurValue = document.getElementById("blurValue");
+        const brightValue = document.getElementById("brightValue");
+        const contrastValue = document.getElementById("contrastValue");
+        const hueValue = document.getElementById("hueValue");
+        const satValue = document.getElementById("satValue");
+        const grayValue = document.getElementById("grayValue");
+        const sepiaValue = document.getElementById("sepiaValue");
+        const invertValue = document.getElementById("invertValue");
+        // Update function
+        function updateFilters() {
+            // Update display values
+            blurValue.textContent = blurSlider.value + "px";
+            brightValue.textContent = brightSlider.value + "%";
+            contrastValue.textContent = contrastSlider.value + "%";
+            hueValue.textContent = hueSlider.value + "°";
+            satValue.textContent = satSlider.value + "%";
+            grayValue.textContent = graySlider.value + "%";
+            sepiaValue.textContent = sepiaSlider.value + "%";
+            invertValue.textContent = invertSlider.value + "%";
+            // Build filter string
+            const filterString = `
+            blur(${blurSlider.value}px)
+            brightness(${brightSlider.value}%)
+            contrast(${contrastSlider.value}%)
+            hue-rotate(${hueSlider.value}deg)
+            saturate(${satSlider.value}%)
+            grayscale(${graySlider.value}%)
+            sepia(${sepiaSlider.value}%)
+            invert(${invertSlider.value}%)`;
+            //Apply filters
+            image.style.filter = filterString;
+            // Apply blend mode
+            image.style.mixBlendMode = blendSelect.value;
+        }
+        //Attach listeners
+        [
+        blurSlider, brightSlider, contrastSlider, hueSlider,
+        satSlider, graySlider, sepiaSlider, invertSlider, blendSelect
+    ].forEach(el => el.addEventListener("input", updateFilters));
+    // Initialize
+    updateFilters();
+    </script>
+</body>
+</html>

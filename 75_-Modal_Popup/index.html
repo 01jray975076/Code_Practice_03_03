@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .modal {
+          display: none;  
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.5);       
+        }
+        .modal-content {
+            background: white;
+            width: 300px;
+            margin: 15px auto;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+        #closeBtn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <title>Modal Popup</title>
+</head>
+<body>
+    <button id="openBtn">Open Modal</button>
+    <div id="modal" class="modal">
+        <span id="closeBtn">&times;</span>
+        <h2>Modal Title</h2>
+        <p>This is a modal popup example.</p>
+    </div> 
+    <script>
+        const modal = document.getElementById("modal");
+        document.getElementById("openBtn").onclick = () => modal.style.display = "block";
+        document.getElementById("closeBtn").onclick = () => modal.style.display = "none";
+        window.onclick = e => { if (e.target === modal) modal.style.display = "none";};
+    </script>
+</body>
+</html>

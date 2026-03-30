@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+
+    </style>
+    <title>Simple Expense Tracker</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-wallet"></i> Expense Tracker</h1>
+    <input id="desc" placeholder="Description">
+    <input id="amt" type="number" placeholder="Amount">
+    <button onclick="add()">Add</button>
+    <ul id="list"></ul>   
+     <script>
+        let expenses = JSON.parse(localStorage.getItem("expenses") || "[]");
+        function render() {
+            list.innerHTML = expenses.map((e,i)=>`
+            <li>${e.desc}: $${e.amt}
+            <button onclick="del(${i})"><i class="fa-solid fa-trash"></i></button></li>
+            `).join("");
+        }
+        function add() {
+            if (!desc.value.trim() || !amt.value.trim()) return;
+            expenses.push({ desc: desc.value, amt: Number(amt.value) });
+            localStorage.setItem("expenses", JSON.stringify(expenses));
+            desc.value = amt.value = "";
+            render();      
+        }
+        function del(i) {
+            expenses.splice(i,1);
+            localStorage.setItem("expenses", JSON.stringify(expenses));
+            render();
+        }
+        render();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

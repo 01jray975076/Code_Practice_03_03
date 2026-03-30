@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { margin: 0; font-family: system-ui, sans-serif; display: grid; grid-template-columns: 260px 1fr; height: 100vh; background: #f5f5f5; }
+        /* Sidebar */
+        .sidebar { background: #fff; border-right: 1px solid #ddd; padding: 20px; overflow-y: auto; }
+        h2 { margin-top: 0; font-size: 18px; }
+        .section-title { margin-top: 25px; font-weight: bold; font-size: 15px; color: #444; }
+        .snippet { display: block; background: #1e1e1e; color: #dcdcdc; padding: 10px; border-radius: 6px; margin: 10px 0; cursor: pointer; font-family: "Fira Code", monospace; font-size: 14px; border: 2px solid transparent; white-space: pre-wrap;}
+        .snippet.active { border-color: #0078d4; background: #252526;}
+        /* Preview */
+        .preview { padding: 20px; position: relative; }
+        .container { background: #fff; border: 1px solid #ddd; height: 400px;border-radius: 8px; padding: 20px;position: relative; overflow: auto; }
+        .demo-box { width: 120px; height: 120px; background: #ffb3c1; border: 2px solid #c2185b; display: flex; justify-content: center; font-weight: bold; font-size: 16px; }
+        .spacer { height: 800px; }
+    </style>
+    <title>CSS Positioning Playground</title>
+</head>
+<body>
+     <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>CSS Positioning Playground</h2>
+        <div class="section-title">Position Examples</div>
+        <div class="snippet active" data-css="position: static;">
+        position: static;
+    </div>
+    <div class="snippet" data-css="position: relative; top: 20px; left: 20px;">
+        position: relative;
+        top: 20px; 
+        left: 20px;
+    </div>
+    <div class="snippet" data-css="position: absolute; top: 20px; right: 20px;">
+        position: absolute;
+        top: 20px; 
+        right: 20px;
+    </div>
+    <div class="snippet" data-css="position: fixed; bottom: 20px; right: 20px;">
+        position: fixed;
+        bottom: 20px; 
+        right: 20px;
+    </div>
+    <div class="snippet" data-css="position: sticky; top: 0;">
+        position: sticky;
+        top: 0;
+    </div>
+    </div>
+     <!-- Preview -->
+      <div class="preview">
+        <h2 id="title">Position Preview</h2>
+        <div class="container" id="container">
+            <div class="demo-box" id="box">BOX</div>
+            <div class="spacer"></div>
+        </div>
+      </div>
+    <script>
+        const snippets = document.querySelectorAll(".snippet");
+        const box = document.getElementById("box");
+        snippets.forEach(snippet => {
+            snippet.addEventListener("click", () => {
+                snippets.forEach(s => s.classList.remove("active"));
+                snippet.classList.add("active");
+                const css = snippet.dataset.css;
+                // Reset all positioning first
+                box.style.position = "";
+                box.style.top = "";
+                box.style.left = "";
+                box.style.right = "";
+                box.style.bottom = "";
+                // Apply new css
+                css.split(";").forEach(rule => {
+                    if (rule.trim().length > 0) {
+                        const [prop, value] = rule.split(":");
+                        box.style[prop.trim()] = value.trim();
+                    }
+                });
+            });
+        });       
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

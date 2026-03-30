@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+background: #0d1117;
+color: #eee;
+font-family: system-ui, sans-serif;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 20px;
+gap: 24px;
+min-height: 100vh;
+margin: 0;
+}
+h1 {
+color: #58a6ff;
+margin-bottom: 16px;
+}
+.button-container {
+display: flex;
+gap: 20px;
+flex-wrap: wrap;
+justify-content: center;
+max-width: 600px;
+width: 100%;
+}
+button {
+background: #238636;
+border: none;
+border-radius: 8px;
+color: white;
+font-size: 16px;
+padding: 14px 28px;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(35, 134, 54, 0.4);
+transition: background-color 0.3s ease,
+            transform 0.2s ease,
+            box-shadow 0.3s ease;
+user-select: none;
+}
+button:hover {
+background-color: #2ea043;
+box-shadow: 0 6px 12px rgba(46, 160, 67, 0.6);
+transform: scale(1.05);    
+}
+button:active {
+background-color: #1e6e2f;
+box-shadow: 0 2px 4px rgba(30, 110, 47, 0.8);
+transform: scale(0.95);    
+}
+/* Additional button styles */
+.btn-shadow {
+box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+transition: box-shagow 0.3s ease;
+}
+.btn-shadow:hover {
+box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+}
+.btn-rotate:hover {
+transform: rotate(5deg) scale(1.1);
+}
+.btn-scale:hover {
+    transform: scale(1.2);
+}
+.btn-color-change:hover {
+background-color: #ff6f61;
+box-shadow: 0 6px 12px rgba(255,111,97,0.6);
+}
+    </style>
+    <title>Button Effects Playground </title>
+</head>
+<body>
+    <h1>Button Effects Playground</h1>
+    <div class="button-container">
+        <button class="btn-shadow">Shadow Effect</button>
+        <button class="btn-rotate">Rotate on Hover</button>
+        <button class="btn-scale">Scale on Hover</button>
+        <button class="btn-color-change">Color Change</button>
+    </div>
+    <script>
+  // Add click event listeners to buttons for visual feedback
+ const buttons = document.querySelectorAll("button");
+ buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        button.style.transform = "scale(0.9)";
+        setTimeout(() => {
+            button.style.transform = "";
+        }, 150);
+    });
+ });  
+    </script>
+</body>
+</html>

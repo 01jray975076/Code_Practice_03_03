@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; }
+        #mole { width: 150px; height: 150px; background: #777; margin: 40px auto; cursor: pointer; }
+    </style>
+    <title>Whack-A-Mole</title>
+</head>
+<body>
+    <h1><i class="sa-solid fa-hammer"></i> Whack-A-Mole</h1>
+    <div id="mole"></div>
+    <p id="score">Score: 0</p>
+    <script>
+        let score = 0;
+        function randomize() {
+            document.getElementById("mole").style.background =
+            Math.random() > 0.5 ? "brown" : "#777";
+        }
+        document.getElementById("mole").onclick = () => {
+            if (document.getElementById("mole").style.background === "brown") {
+                score++;
+                document.getElementById("score").innerText = "Score: " + score;
+            }
+            randomize();
+        };
+        setInterval(randomize, 1000);
+    </script>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title> CSS Layout Playground (Grid + Flexbox)</title>
+<style>
+    body { margin: 0; font-family: system-ui, sans-serif; display: grid; grid-template-columns: 260px 1fr; height: 100vh; background: #f5f5f5; }
+    /* Sidebar  */
+    .sidebar { background: #fff; border-right: 1px solid #ddd; padding: 20px; overflow-y: auto;}
+    h2 { margin-top: 0; font-size: 18px; }
+    .section-title { margin-top: 25px; font-weight: bold; font-size: 15px; color: #444;}
+    .snippet { display: Inline-block; background: #1e1e1e; color: #dcdcdc; padding: 10px; border-radius: 6px; margin: 10px 0; cursor: pointer; font-family: "Fira Code", monospace; font-size: 14px; border: 2px solid transparent; white-space: pre; }
+    .snippet.active { border-color: #0078d4; background: #252526;}
+    /* Preview area */
+    .preview { padding: 20px; }
+    .box { background: #ffb3c1; border: 2px solid #c2185b; }
+    /* Grid container */
+    .grid-demo { display: grid; gap: 10px; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; height: 300px; }
+    /* Flex container */
+    .flex-demo { display: flex; gap: 10px; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; height: 300px; align-items: center; justify-content: center; }
+    .item { background: #90caf9; border: 2px solid #1565c0; padding: 10px; font-weight: bold; text-align: center; width: 60px;}
+</style>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+        <h2>CSS Layout Playground</h2>
+        <div class="section-title">Grid Examples</div>
+        <div class="snippet active" data-type="grid" data-css="grid-template-columns: repeat(3, 1fr);">
+            grid-template-columns: repeat(3, 1fr);
+        </div>
+        <div class="snippet" data-type="grid" data-css="grid-template-columns: 100px 1fr 2fr;">
+            grid-template-columns: 100px 1fr 2fr;
+        </div>
+        <div class="snippet" data-type="grid" data-css="grid-template-areas: 'a a b' 'c d b';">
+            grid-template-areas:
+            'a a b'
+            'c d b'
+        </div>
+        <div class="section-title">Flexbox Examples</div>
+        <div class="snippet" data-type="flex" data-css="justify-content: space-between;">
+    justify-content: space-between;   
+        </div>
+        <div class="snippet" data-type="flex" data-css="flex-direction: column;">
+    flex-direction: column;   
+        </div>
+        <div class="snippet" data-type="flex" data-css="align-items: center;">
+    align-items: center;   
+        </div>    
+    </div>
+    <!-- Preview -->
+     <div class="preview">
+        <h2 id="title">Grid Preview</h2>
+        <div id="demo" class="grid-demo">
+            <div class="box">A</div>
+            <div class="box">B</div>
+            <div class="box">C</div>
+            <div class="box">D</div>
+        </div>
+     </div>
+    <script>
+        const snippets = document.querySelectorAll(".snippet");
+        const demo = document.getElementById("demo");
+        const title = document.getElementById("title");
+        snippets.forEach(snippet => {
+            snippet.addEventListener("click", () => {
+                snippets.forEach(s => s.classList.remove("active"));
+                snippet.classList.add("active");
+                const type = snippet.dataset.type;
+                const css = snippet.dataset.css;
+                // Switch container type + title
+                if (type === "grid") {
+                    demo.className = "grid-demo";
+                    title.innerText = "Grid Preview";
+                } else {
+                    demo.className = "flex-demo";
+                    title.innerText = "Flexbox Preview";
+                }
+                // Apply the CSS
+                demo.style = css;
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

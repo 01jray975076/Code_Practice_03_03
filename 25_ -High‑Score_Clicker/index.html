@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; padding: 40px;}
+    </style>
+    <title>High‑Score Clicker</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-hand-pointer"></i> High Score Clicker</h1>
+    <button id="btn">Click!</button>
+    <p>Score: <span id="score">0</span></p>
+    <p>Best: <span id="best">0</span></p>
+    <script>
+        const bestEl = document.getElementById("best");
+        const scoreEl = document.getElementById("score");
+        let score = 0;
+        let best = JSON.parse(localStorage.getItem("bestClick") || "0");
+        best.innerText = best;
+        btn.onclick = () => {
+            score++;
+            scoreEl.innerText = score;
+            if (score > best) {
+                best = score;
+                localStorage.setItem("bestClick", JSON.stringify(best));
+                bestEl.innerText = best;
+            }
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

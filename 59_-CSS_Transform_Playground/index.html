@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+}
+/* Sidebar styling */
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="range"],
+select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+
+}
+  
+
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+.preview {
+padding: 20px;
+overflow-y: auto;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.transform-box {
+width: 180px;
+height: 180px;
+background: #4a90e2;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 20px;
+font-weight: bold;
+transition: all 0.2s ease;
+}
+    </style>
+    <title>CSS Transform Playground</title>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+        <h2>CSS Transform Playground</h2>
+        <div class="control-group"> <label>Transform Origin</label> <select id="originSelect"> <option value="center center">center center</option> <option value="top left">top left</option> <option value="top right">top right</option> <option value="bottom left">bottom left</option><option value="bottom right">bottom right</option> </select>
+        </div>
+        <div class="control-group"> <label>Rotate (deg)</label> <input type="range" id="rotateSlider" min="-180" max="180" value="0"> <div class="value" id="rotateValue">0°</div>
+            </div>
+            <div class="control-group"> <label>Scale</label> <input type="range" id="scaleSlider" min="50" max="200" value="100"> <div class="value" id="scaleValue">1.00</div>
+            </div>
+            <div class="control-group"> <label>Translate X (px)</label> <input type="range" id="translateXSlider" min="-200" max="200" value="0"> <div class="value" id="translateXValue">0px</div>
+            </div>
+            <div class="control-group"> <label>Translate Y (px)</label> <input type="range" id="translateYSlider" min="-200" max="200" value="0"> <div class="value" id="translateYValue">0px</div>
+            </div>
+            <div class="control-group"> <label>Skew X (deg)</label> <input type="range" id="skewXSlider" min="-60" max="60" value="0"> <div class="value" id="skewXValue">0°</div>
+            </div> 
+            <div class="control-group"> <label>Skew Y (deg)</label> <input type="range" id="skewYSlider" min="-60" max="60" value="0"> <div class="value" id="skewYValue">0°</div>
+            </div>          
+     </div><!--  close sidebar -->
+     <!-- Preview -->
+      <div class="preview">
+        <div class="transform-box" id="transformBox">
+            Box
+        </div>
+      </div>   
+    <script>
+        // Grab Elements
+        const box = document.getElementById("transformBox");
+        const originSelect = document.getElementById("originSelect");
+        const rotateSlider = document.getElementById("rotateSlider");
+        const scaleSlider = document.getElementById("scaleSlider");
+        const translateXSlider = document.getElementById("translateXSlider");
+        const translateYSlider = document.getElementById("translateYSlider");
+        const skewXSlider = document.getElementById("skewXSlider");
+        const skewYSlider = document.getElementById("skewYSlider");
+        // Grab Values
+        const rotateValue = document.getElementById("rotateValue");
+        const scaleValue = document.getElementById("scaleValue");
+        const translateXValue = document.getElementById("translateXValue");
+        const translateYValue = document.getElementById("translateYValue");
+        const skewXValue = document.getElementById("skewXValue");
+        const skewYValue = document.getElementById("skewYValue");
+        // Update the function
+        function updateTransform() {
+            const rotate = Number(rotateSlider.value);
+            const scale = Number(scaleSlider.value) / 100; // <- key change
+            const tx = Number(translateXSlider.value);
+            const ty = Number(translateYSlider.value);
+            const skewX = Number(skewXSlider.value);
+            const skewY = Number(skewYSlider.value);
+            rotateValue.textContent = rotate + "°";
+            scaleValue.textContent = scale.toFixed(2);
+            translateXValue.textContent = tx + "px"; 
+            translateYValue.textContent = ty + "px"; 
+            skewXValue.textContent = skewX + "°";
+            skewYValue.textContent = skewY + "°";
+            box.style.transformOrigin = originSelect.value;
+            box.style.transform = `
+            translate(${tx}px, ${ty}px)
+            rotate(${rotate}deg)
+            skew(${skewX}deg, ${skewY}deg)
+            scale(${scale})`;
+        }
+        [
+            originSelect,
+            rotateSlider,
+            scaleSlider,
+            translateXSlider,
+            translateYSlider,
+            skewXSlider,
+            skewYSlider
+        ].forEach(el => el.addEventListener("input", updateTransform));
+        // Initialize
+        updateTransform();
+    </script>
+</body>
+</html>

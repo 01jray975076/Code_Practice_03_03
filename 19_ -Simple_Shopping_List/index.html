@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+    </style>
+    <title>Simple Shopping List</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-cart-shopping"></i> Shopping List</h1>
+    <input id="item" placeholder="Add item">
+    <button onclick="add()">Add</button>
+    <ul id="list"></ul>    
+    <script>
+        let items = JSON.parse(localStorage.getItem("shop") || "[]");
+        function render() {
+            list.innerHTML = items.map((x,i)=>`<li>${x} 
+            <button onclick="del(${i})"><i class="fa-solid fa-trash"></i></button>
+            </li>`).join("");
+        }
+        function add() {
+            if (!item.value.trim()) return;
+            items.push(item.value.trim());
+            localStorage.setItem("shop", JSON.stringify(items));
+            item.value = "";
+            render();
+        }
+        function del(i) {
+            items.splice(i,1);
+            localStorage.setItem("shop", JSON.stringify(items));
+            render();
+        }
+        render();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

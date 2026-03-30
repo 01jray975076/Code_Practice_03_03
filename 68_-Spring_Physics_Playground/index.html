@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+background: #0d1117;
+color: #eee;
+font-family: system ui sans-serif;
+display: flex;
+justify-content: center;
+padding-top: 40px;
+margin: 0;
+}
+.container {
+width: 420px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+ h1 {
+margin-top: 0;
+text-align: center;
+color: #58a6ff;
+}
+.control-group { 
+margin-bottom: 16px;
+}
+label { 
+font-weight: 600;
+display: block;
+margin-bottom: 6px;
+}
+input[type="range"] {
+width: 100%;
+}
+button {
+width: 100%;
+padding: 10px;
+background: #238636;
+border: none;
+border-radius: 6px;
+color: white;
+font-size: 15px;
+cursor: pointer;
+transition: all 0.2s ease;
+margin-top: 10px;
+}
+button:hover {
+background: #2ea043
+}
+.stage {
+margin-top: 30px;
+height: 200px;
+background: #0d1117;
+border: 1px solid #30363d;
+border-radius: 8px;
+position: relative;
+overflow: hidden;
+}
+.ball {
+width: 40px;
+height: 40px;
+background: #ff7b72;
+border-radius: 50%;
+position: absolute;
+top: 80px;
+left: 0;
+}
+.code-output {
+margin-top: 24px;
+background: #0d1117;
+border: 1px solid #30363d;
+padding: 16px;
+border-radius: 8px;
+}
+.code-output h3 {
+margin-top: 0;
+color: #58a6ff;
+font-size: 16px;
+}
+#codeBlock {
+white-space: pre-wrap;
+font-family: "Consolas", monospace;
+font-size: 14px;
+color: #c9d1d9;
+}
+    </style>
+    <title>Spring Physics Playground</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Spring Physics Playground</h1>
+        <div class="controls">
+            <div class="control-group">
+                <label>Spring Tension</label>
+                <input type="range" id="tension" min="0.01" max="0.5" step="0.01" value="0.1">
+                <span id="tensionValue">0.10</span>
+            </div>
+            <div class="control-group">
+                <label>Friction</label>
+                <input type="range" id="friction" min="0.7" max="0.99" step="0.01" value="0.85">
+                <span id="frictionValue">0.85</span>
+            </div>
+            <button id="resetBtn">Reset</button>
+        </div>
+        <div class="stage">
+            <div class="ball" id="ball"></div>
+        </div>
+        <div class="code-output">
+            <h3>Physics Formula</h3>
+            <pre id="codeBlock"></pre>
+        </div>
+    </div>  
+    <script>
+        // Get UI elements
+const tensionSlider = document.getElementById("tension");
+const frictionSlider = document.getElementById("friction");
+const tensionValue = document.getElementById("tensionValue");
+const frictionValue = document.getElementById("frictionValue");
+const ball = document.getElementById("ball");
+const resetBtn = document.getElementById("resetBtn");
+const codeBlock = document.getElementById("codeBlock");
+// Physics variables
+let x = 0;          // current position
+let velocity = 0;   // current speed
+let target = 300;   // where the spring wants to pull the ball
+let tension = 0.1;  // spring strength
+let friction = 0.85; // how fast it slows down
+// Update displayed values
+tensionSlider.addEventListener("input", () => {
+    tension = Number(tensionSlider.value);
+    tensionValue.textContent = tension.toFixed(2);
+    updateCodeOutput();
+});
+frictionSlider.addEventListener("input", () => {
+    friction = Number(frictionSlider.value);
+    frictionValue.textContent = friction.toFixed(2);
+    updateCodeOutput();
+});
+// Reset ball
+resetBtn.addEventListener("click", () => {
+ x = 0;
+ velocity = 0;
+ updateCodeOutput();
+})
+// Animation loop
+function animate() {
+    // Hooke's Law: force = (target - position) * tension
+    const force = (target - x) * tension;
+    // Add force to velocity
+    velocity += force;
+    // Apply friction (damping)
+    velocity *= friction;
+     // Update position
+    x += velocity;
+     // Move the ball
+    ball.style.left = x + "px";
+    requestAnimationFrame(animate);
+}
+// Display the physics formula in the code panel
+function updateCodeOutput() {
+    const code = `
+    force = (target - position) * ${tension.toFixed(2)}
+    velocity += force
+    velocity *= ${friction.toFixed(2)}
+    position += velocity
+    `.trim();
+    codeBlock.textContent = code; 
+}
+// Initialize
+updateCodeOutput();
+animate();
+    </script>
+</body>
+</html>

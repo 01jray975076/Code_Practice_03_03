@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial; padding: 40px;}
+    </style>
+    <title>Password Generator</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-key"></i> Password Generator</h1>
+    <input type="number" id="len" min="4" max="32">
+    <button onclick="makePass()">Generate</button>
+    <p id="pass"></p>
+    <script>
+        len.value = JSON.parse(localStorage.getItem("passLen") || "12");
+        function makePass() {
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%"
+        let outEl = " ";
+        for (let i = 0; i<len.value; i++) outEl += chars[Math.floor(Math.random()*chars.length)];
+        pass.innerText = outEl;
+        localStorage.setItem("passLen", JSON.stringify(len.value));
+    }
+        </script>
+    <script src="script.js"></script>
+</body>
+</html>

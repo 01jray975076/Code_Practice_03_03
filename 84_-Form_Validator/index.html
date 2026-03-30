@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+    /* Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;        
+    }
+    /* Page title */
+    .title {
+        text-align: center;
+        margin: 40px 0;
+        font-size: 2rem;
+    }
+    /* Form Container */
+    .form {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+    }
+    /* Each input group */
+    .form-control {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    /* Labels */
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    /* Inputs */
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+    /* Error message text */
+small {
+    color: red;
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    visibility: hidden; /* Hidden until error */
+}
+/* Error state */
+.form-control.error input {
+    border-color: red;
+}
+.form-control.error small {
+    visibility: visible;
+}
+/* Success state */
+.form-control.success input {
+    border-color: #4caf50;
+}
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #4caf50;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.btn:hover {
+    background: #45a049;
+}
+   </style>
+    <title>Form Validator</title>
+</head>
+<body>
+    <h1 class="title">Create an Account</h1>
+    <!-- FORM CONTAINER -->
+    <form id="form" class="form">
+        <!-- NAME FIELD -->
+        <div class="form-control">
+            <label>Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+            <small>Error message</small>
+        </div>
+        <!-- EMAIL FIELD -->
+        <div class="form-control">
+            <label>Email</label>
+            <input type="text" id="email" placeholder="Enter your email">
+            <small>Error Message</small>
+        </div>
+        <!-- PASSWORD FIELD -->
+        <div class="form-control">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+            <small>Error Message</small>
+        </div>
+        <!-- CONFIRM PASSWORD FIELD -->
+        <div class="form-control">
+            <label>Confirm Password</label>
+            <input type="password" id="password2" placeholder="Confirm password">
+            <small>Error Message</small>
+        </div>
+        <button type="submit" class="btn">Submit</button>
+    </form>  
+    <script>
+        // Select form and inputs
+        const form = document.getElementById("form");
+        const nameEl = document.getElementById("name");
+        const emailEl = document.getElementById("email");
+        const passwordEl = document.getElementById("password");
+        const password2El = document.getElementById("password2");
+        // Show error message
+        function showError(input, message) {
+            const formControl = input.parentElement;
+            formControl.className = "form-control error"; // Add error class
+            formControl.querySelector("small").innerText = message;
+        }
+        // Show success outline
+        function showSuccess(input) {
+            const formControl = input.parentElement;
+            formControl.className = "form-control success"; // Add success class
+}
+// Check if email is valid using regex
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email); 
+    }
+    // Handle form submission
+form.addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent form from submitting
+    // NAME VALIDATION
+if (nameEl.value.trim() === "") {
+    showError(nameEl, "Name is required");
+} else {
+    showSuccess(nameEl);
+}
+// EMAIL VALIDATION
+if (emailEl.value.trim() === "") {
+    showError(emailEl, "Email is required");
+} else if (!isValidEmail(emailEl.value.trim())) {
+    showError(emailEl, "Email is not valid");
+} else {
+    showSuccess(emailEl);
+}
+// PASSWORD VALIDATION
+if (passwordEl.value.length < 6) {
+    showError(passwordEl, "Password must be at least 6 characters");
+} else {
+    showSuccess(passwordEl);
+}
+// CONFIRM PASSWORD VALIDATION
+if (password2El.value !== passwordEl.value) {
+    showError(password2El, "Passwords do not match");
+} else {
+    showSuccess(password2El);
+} 
+});
+
+ 
+
+
+
+    </script>
+</body>
+</html>

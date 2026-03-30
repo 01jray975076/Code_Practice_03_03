@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #0d1117;
+            color: #eee;
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+        }
+.container {
+width: 420px;
+background: #161b22;
+padding: 24px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+ h1 {
+margin-top: 0;
+text-align: center;
+color: #58a6ff;
+}
+.control-group { 
+margin-bottom: 16px;
+}
+Label {
+display: block;
+margin-bottom: 6px;
+font-weight: 600;
+}
+input[type="range"] {
+width: 100%;
+}
+button {
+width: 100%;
+padding: 10px;
+background: #238636;
+border: none;
+border-radius: 6px;
+color: white;
+font-size: 15px;
+cursor: pointer;
+margin-top: 10px;
+}
+button:hover {
+background: #2ea043
+}
+canvas {
+margin-top: 20px;
+background: #0d1117;
+border: 1px solid #30363d;
+border-radius: 8px;
+}
+.code-output {
+margin-top: 24px;
+background: #0d1117;
+border: 1px solid #30363d;
+padding: 16px;
+border-radius: 8px;
+}
+.code-output h3 {
+margin-top: 0;
+color: #58a6ff;
+font-size: 16px;
+}
+#codeBlock {
+white-space: pre-wrap;
+font-family: "Consolas", monospace;
+font-size: 14px;
+color: #c9d1d9;
+}
+    </style>
+    <title>Particle Playground</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Particle Playground</h1>
+        <div class="controls">
+            <div class="control-group">
+                <label>Particle Count</label>
+                <input type="range" id="count" min="10" max="300" value="80">
+                <span id="countValue">80</span>
+            </div>
+            <div class="control-group">
+                <label>Particle Size</label>
+                <input type="range" id="size" min="1" max="10" value="4">
+                <span id="sizeValue">4px</span>
+            </div>
+            <div class="control-group">
+                <label>Particle Speed</label>
+                <input type="range" id="speed" min="0.2" max="4" step="0.1" value="1.5">
+                <span id="speedValue">1.5</span>
+            </div>
+            <button id="resetBtn">Reset Particles</button>      
+       </div>
+       <canvas id="canvas" width:="400" height="300"></canvas>
+       <div class="code-output">
+        <h3>Particle Update Code</h3>
+        <pre id="codeBlock"></pre>
+       </div>
+    </div> 
+    <script>
+// Canvas setup
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const speedSlider = document.getElementById("speed");
+const countSlider = document.getElementById("count");
+const sizeSlider = document.getElementById("size");
+const countValue = document.getElementById("countValue");
+const sizeValue = document.getElementById("sizeValue");
+const speedValue = document.getElementById("speedValue");
+const resetValue = document.getElementById("resetValue");
+const codeBlock = document.getElementById("codeBlock");
+// Particle array
+let particles = [];
+// Settings
+let particleCount = 80;
+let particleSize = 4;
+let particleSpeed = 1.5;
+// Particle class
+class Particle {
+constructor() {
+this.x = Math.random() * canvas.width;
+this.y = Math.random() * canvas.height;
+// Random direction 
+this.vx = (Math.random() - 0.5) * particleSpeed;
+this.vy = (Math.random() - 0.5) * particleSpeed;
+this.size = particleSize;
+}
+update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    // Bounce off edges
+if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+}
+draw() {
+ctx.fillStyle = "#ff7b72"
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+ctx.fill();
+  }
+}
+// Create particles
+function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+    updateCodeOutput();
+}
+// Animation loop
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+// Update UI values
+countSlider.addEventListener("input", () => {
+    particleCount = Number(countSlider.value);
+    countValue.textContent = particleCount;
+    initParticles();
+});
+sizeSlider.addEventListener("input", () => {
+    particleSize = Number(sizeSlider.value);
+    sizeValue.textContent = particleSize;
+    initParticles();
+});
+speedSlider.addEventListener("input", () => {
+    particleSpeed = Number(speedSlider.value);
+    speedValue.textContent = particleSpeed;
+    initParticles();
+});
+// Reset button
+resetBtn.addEventListener("click", initParticles);
+// Code output panel
+function updateCodeOutput() {
+    const code = `
+    x += vx;
+    y += vy
+    if (x < 0 || x > width) vx *= -1
+    if (y < 0 || y > width) vy *= -1
+    `.trim();
+    codeBlock.textContent = code;
+}
+// Ititialize
+initParticles();
+animate();   
+    </script>
+</body>
+</html>

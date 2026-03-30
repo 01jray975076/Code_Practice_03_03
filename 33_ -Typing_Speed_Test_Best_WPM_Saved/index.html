@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial; padding: 40px; }
+        input { width: 300px; padding: 10px;}
+    </style>
+    <title>Typing Speed Test (Best WPM Saved)</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-keyboard"></i> Typing Speed</h1>
+    <p>Type: <b id="word">hello</b></p>
+    <input id="box">
+    <p>Best WPM: <span id="best">-</span></p>
+    <script>
+        let start;
+        let best = JSON.parse(localStorage.getItem("typeBest") || "null");
+       const bestEl = document.getElementById("best");
+        if (best) bestEl.innerText = best;
+        box.onfocus = () => start = Date.now();
+        box.oninput = () => {
+            if (box.value === word.innerText) {
+                let seconds = (Date.now() - start) / 1000;
+                let wpm = Math.round((60 / seconds));
+                if (!best || wpm > best) {
+                    best = wpm;
+                    localStorage.setItem("typeBest", JSON.stringify(best));
+                    bestEl.innerText = best;
+                }
+            }
+        };
+
+    </script>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

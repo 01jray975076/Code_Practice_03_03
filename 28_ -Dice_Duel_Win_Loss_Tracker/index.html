@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body { text-align: center; font-family: Arial, Helvetica, sans-serif; padding: 40px; }
+        .dice { font-size: 60px;}
+    </style>
+    <title>Dice Duel (Win/Loss Tracker)</title>
+</head>
+<body>
+    <h1><i class="fa-solid fa-dice"></i> Dice Duel</h1>
+    <button onclick="roll()">Roll</button>
+    <p>You: <span id="you">0</span></p>
+    <p>CPU: <span id="cpu">0</span></p>
+    <p>Wins: <span id="wins">0</span> | Losses: <span id="losses">0</span></p>
+    <script>
+        let stats = JSON.parse(localStorage.getItem("diceStats") || '{"wins":0,"losses":0}');
+        wins.innerText = stats.wins;
+        losses.innerText = stats.losses;
+        function roll() {
+            let a = Math.ceil(Math.random()*6);
+            let b = Math.ceil(Math.random()*6);
+            you.innerText = a;
+            cpu.innerText = b;
+            if (a > b) stats.wins++;
+            if (a < b) stats.losses++;
+            localStorage.setItem("diceStats", JSON.stringify(stats));
+            wins.innerText = stats.wins
+            losses.innerText = stats.losses
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

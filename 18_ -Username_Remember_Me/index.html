@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+
+    </style>
+    <title>Username Remember Me</title>
+</head>
+<body>
+  <h1><i class="fa-solid fa-user"></i> Welcome</h1>
+  <input id="name" placeholder="Enter your name">
+  <button onclick="save()">Save</button>
+  <p id="greet"></p>   
+    <script>
+        const greet = document.getElementById("greet");
+        const saved = localStorage.getItem("username");
+        const input = document.getElementById("name");
+        if (saved) greet.innerText = "Welcome back, " + saved + "!";
+        function save() {
+            localStorage.setItem("username", input.value);
+            greet.innerText = "Welcome, " + input.value + "!";
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

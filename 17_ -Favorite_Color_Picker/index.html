@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+   <style>
+
+   </style>
+    <title>Favorite Color Picker</title>
+
+</head>
+<body>
+    <h1><i class="fa-solid fa-palette"></i> Favorite Color</h1>
+    <input type="color" id="picker">
+    <p id="msg"></p>    
+    <script>
+        const picker = document.getElementById("picker");
+        const saved = localStorage.getItem("favColor");
+        if (saved) {
+            picker.value = saved;
+            document.body.style.background = saved;
+            msg.innerText = "Loaded saved color." + " " + picker.value
+        }
+        picker.oninput = () => {
+            localStorage.setItem("favColor", picker.value);
+            document.body.style.background = picker.value;
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

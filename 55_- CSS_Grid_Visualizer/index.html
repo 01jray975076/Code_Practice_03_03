@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+         /* 
+      Same 2-column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: grid container
+    */
+    body { 
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        height: 100vh;
+        background: #f5f5f5;
+    }
+    /* Sidebar styling */
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="text"],
+     input[type="range"],
+     select  {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { font-size: 13px;
+color: #444;
+margin-top: 4px;
+}
+/* Preview area */
+.preview { 
+    padding: 20px;
+    overflow-y: auto;
+}
+.item {
+background: #4caf50;
+color: white;
+font-weight: bold;
+font-size: 18px;
+border-radius: 8px;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 10px;
+}
+.grid-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 400px;
+    display: grid;  /* THIS is the key */
+    gap: 10px;       /* default gap */
+    transition: all 0.2s ease;
+}
+    </style>
+    <title> CSS Grid Visualizer</title>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+        <h2>CSS Grid Visualizer</h2>
+        <!-- COLUMNS -->
+         <div class="control-group">
+            <label>grid-template-columns</label>
+            <input type="text" id="colInput" placeholder="1fr 1fr 1fr">
+         </div>
+         <!-- ROWS -->
+         <div class="control-group">
+            <label>grid-template-rows</label>
+            <input type="text" id="rowInput" placeholder="auto auto">
+         </div>
+         <!-- GAP -->
+         <div class="control-group">
+            <label>Gap (px)</label>
+            <input type="range" id="gapSlider" min="0" max="40" value="10">
+            <div class="value" id="gapValue">10px</div>
+         </div>
+          <!-- JUSTIFY ITEMS -->
+           <div class="control-group">
+            <label>justify-items</label>
+            <select id="justifyItems">
+            <option value="stretch">stretch</option>
+            <option value="start">start</option>
+            <option value="center">center</option>
+            <option value="end">end</option>
+          </select>
+           </div>
+           <!-- ALIGN ITEMS -->
+           <div class="control-group">
+            <label>align-items</label>
+            <select id="alignItems">
+            <option value="stretch">stretch</option>
+            <option value="start">start</option>
+            <option value="center">center</option>
+            <option value="end">end</option>
+          </select>
+           </div>
+           <!-- JUSTIFY CONTENT -->
+           <div class="control-group">
+            <label>justify-content</label>
+            <select id="justifyContent">            
+            <option value="start">start</option>
+            <option value="center">center</option>
+            <option value="end">end</option>           
+            <option value="space-between">space-between</option>
+            <option value="space-around">space-around</option>
+            <option value="space-evenly">space-evenly</option>            
+          </select>
+           </div>
+           <!-- ALIGN CONTENT -->
+           <div class="control-group">
+            <label>align-content</label>
+            <select id="alignContent">            
+            <option value="start">start</option>
+            <option value="center">center</option>
+            <option value="end">end</option>           
+            <option value="space-between">space-between</option>
+            <option value="space-around">space-around</option>
+            <option value="space-evenly">space-evenly</option>            
+          </select>
+           </div>
+       <!-- GRID AREAS -->
+        <div class="control-group">
+            <label>grid-template-areas</label>
+            <input type="text" id="areaInput" placeholder="'a a b' 'c d d'">                                                                                                                         
+        </div>   
+        </div>
+    <!-- Preview -->
+     <div class="preview">
+        <div class="grid-box" id="gridBox">
+            <div class="item" style="grid-area: a;">A</div>
+            <div class="item" style="grid-area: b;">B</div>
+            <div class="item" style="grid-area: c;">C</div>
+            <div class="item" style="grid-area: d;">D</div>
+            <div class="item">E</div>
+            <div class="item">F</div>
+        </div>
+     </div>
+    <script>
+        // Grab elements
+        const gridBox = document.getElementById("gridBox");
+        const colInput = document.getElementById("colInput");
+        const rowInput = document.getElementById("rowInput");
+        const gapSlider = document.getElementById("gapSlider");
+        const gapValue = document.getElementById("gapValue");
+        const justifyItems = document.getElementById("justifyItems");
+        const alignItems = document.getElementById("alignItems");
+        const justifyContent = document.getElementById("justifyContent");
+        const alignContent = document.getElementById("alignContent");
+        const areaInput = document.getElementById("areaInput");
+        // Update function
+        function updateGrid() {
+            // Columns
+            gridBox.style.gridTemplateColumns = colInput.value;
+            // Rows
+            gridBox.style.gridTemplateRows = rowInput.value;
+            // Gap
+            gridBox.style.gap = gapSlider.value + "px";
+            gapValue.textContent = gapSlider.value + "px";
+            // Alignment
+            gridBox.style.justifyItems = justifyItems.value;
+            gridBox.style.alignItems = alignItems.value;
+            gridBox.style.justifyContent = justifyContent.value;
+            gridBox.style.alignContent = alignContent.value;
+            // Areas
+            if (areaInput.value.trim() !== "") {
+                gridBox.style.gridTemplateAreas = areaInput.value;
+            }
+        }
+        // Attach listeners
+        colInput.addEventListener("input", updateGrid);
+        rowInput.addEventListener("input", updateGrid);
+        gapSlider.addEventListener("input", updateGrid);
+        justifyItems.addEventListener("change", updateGrid);
+       alignItems.addEventListener("change", updateGrid);
+       justifyContent.addEventListener("change", updateGrid);
+       alignContent.addEventListener("change", updateGrid);
+       areaInput.addEventListener("input", updateGrid);
+       // Initialize
+       updateGrid();
+    </script>
+</body>
+</html>

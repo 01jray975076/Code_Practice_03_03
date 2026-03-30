@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset default spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Page title */
+.title {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 2rem;
+}
+/* GALLERY GRID */
+.gallery {
+    display: grid;   /* Enables CSS Grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* auto-fit = fill row with as many columns as possible */
+    /* minmax = each column is at least 250px, but can grow */
+    gap: 15px;
+    padding: 20px;
+}
+/* Each gallery item */
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images fill their box */
+    border-radius: 10px;
+    transition: transform 0.3s ease; /* Smooth hover zoom */
+}
+/* Hover zoom effect */
+.item img:hover {
+    transform: scale(1.05);
+}
+/* LIGHTBOX POPUP */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed;
+    inset: 0; /* top:0, left:0, right:0, bottom:0 */
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+/* Lightbox image */
+.lightbox img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 10px;
+}
+/* Close button */
+#closeBtn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+}
+    </style>
+    <title>CSS Grid Photo Gallery</title>
+</head>
+<body>
+    <h1 class="title">My Photo Gallery</h1>
+     <!-- GALLERY GRID -->
+      <div class="gallery">
+       <!-- Each image is inside a wrapper for styling control -->
+        <div class="item"><img src="image_1.jpg" alt="Photo 1"></div>
+        <div class="item"><img src="image_2.jpg" alt="Photo 2"></div>
+        <div class="item"><img src="image_3.jpg" alt="Photo 3"></div>
+        <div class="item"><img src="image_4.jpg" alt="Photo 4"></div>
+        <div class="item"><img src="image_5.jpg" alt="Photo 5"></div>
+        <div class="item"><img src="image_6.jpg" alt="Photo 6"></div> 
+      </div>
+      <!-- LIGHTBOX POPUP -->
+      <div id="lightbox" class="lightbox">
+      <span id="closeBtn">&times;</span>
+      <img src="" id="lightboxImg">
+        </div>  
+    <script>
+       // Select all gallery images
+const galleryImages = document.querySelectorAll(".gallery img");
+// Select lightbox elements
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const closeBtn = document.getElementById("closeBtn");
+// Loop through each image and add click event
+galleryImages.forEach(img => {
+    img.addEventListener("click", () => {
+     // Show the lightbox
+     lightbox.style.display = "flex";
+     // Set the clicked image as the lightbox image
+     lightboxImg.src = img.src;   
+    });
+});
+// Close the lightbox when clicking the X button
+closeBtn.addEventListener("click", () => {
+    lightbox.style.display = "none";
+});
+//Optional: close lightbox when clicking outside the image
+lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+        lightbox.style.display = "none"
+    }
+}); 
+    </script>
+</body>
+</html>

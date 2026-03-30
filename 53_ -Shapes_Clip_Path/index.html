@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+    /* 
+      Same 2‑column layout as your other playgrounds:
+      - Sidebar: controls
+      - Preview: shape box
+    */
+    body { 
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100vh;
+    background: #f5f5f5;
+}
+/* Sidebar styling */
+.sidebar { 
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+ margin-top: 0;
+ font-size: 18px;
+}
+.control-group { 
+margin-bottom: 20px;
+}
+label { 
+font-weight: bold;
+display: block;
+margin-bottom: 6px;
+}
+input[type="text"],
+input[type="range"],
+select {
+width: 100%;
+padding: 6px;
+font-size: 14px;
+border-radius: 6px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+.value { 
+    font-size: 13px;
+    color: #444;
+    margin-top: 4px;
+}
+/* Preview area */
+.preview { 
+    padding: 20px; 
+}
+/* 
+      The shape box.
+      clip-path will change its visible outline.
+*/
+ .shape-box {
+ width: 300px;
+ height: 300px;
+ background: #ff6f61;
+ border-radius: 10px;
+ transition: all 0.25s ease;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ font-size: 22px;
+ font-weight: bold;
+}
+    </style>
+    <title>Shapes & Clip‑Path</title>
+</head>
+<body>
+     <!-- Sidebar -->
+      <div class="sidebar">
+    <h2>Shapes & Clip-Path Playground</h2>
+    <!-- SHAPE TYPE -->
+     <div class="control-group">
+        <label>Choose Shape</label>
+        <select id="shapeSelect">
+            <option value="circle">Circle</option>
+            <option value="ellipse">Ellipse</option>
+            <option value="polygon">Polygon (Triangle)</option>
+            <option value="diamond">Diamond</option>
+            <option value="star">Star</option>
+            <option value="blob">Blob</option>
+            <option value="custom">Custom clip-path</option>
+        </select>
+     </div>
+     <!-- CUSTOM INPUT -->
+      <div class="control-group">
+        <label>Custom clip-path()</label>
+        <input type="text" id="customInput" placeholder="polygon(0% 0%, 100% 0%, 50% 100%)">
+      </div>
+      <!-- BORDER RADIUS -->
+      <div class="control-group">
+        <label>Border Radius</label>
+        <input type="range" id="radiusSlider" min="0" max="50" value="10">
+        <div class="value" id="radiusValue">10px</div>
+      </div>
+      <!-- ROTATION -->
+       <div class="control-group">
+        <label>Rotation</label>
+        <input type="range" id="rotateSlider" min="0" max="360" value="0">
+        <div class="value" id="rotateValue">0°</div>
+       </div>
+       </div>
+       <!-- Preview -->
+        <div class="preview">
+            <h2>Shape Preview</h2>
+            <div class="shape-box" id="shapeBox">
+                Shape
+            </div>
+        </div>
+    <script>
+    // Grab elements
+    const shapeBox = document.getElementById("shapeBox");
+    const shapeSelect = document.getElementById("shapeSelect");
+    const customInput = document.getElementById("customInput");
+    const radiusSlider = document.getElementById("radiusSlider");
+    const rotateSlider = document.getElementById("rotateSlider");
+    // Value displays
+    const radiusValue = document.getElementById("radiusValue");
+    const rotateValue = document.getElementById("rotateValue");
+    // Predefined shapes using clip-path
+    const shapes = {
+        circle: "circle(50% at 50% 50%)",
+        ellipse: "ellipse(45% 60% at 50% 50%)",
+        polygon:"polygon(50% 0%, 0% 100%,100% 100%)",  // triangle 
+        diamond:"polygon(50% 0%, 100% 50%,50% 100%, 0% 50%)", 
+        star:"polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)", 
+        blob:"polygon(44% 3%, 70% 10%, 90% 33%, 86% 63%, 63% 88%, 33% 90%, 12% 70%, 6% 40%, 18% 14%)" 
+    };
+    // Update function
+    function updateShape() {
+        const selected = shapeSelect.value;
+    // Update border radius display
+    radiusValue.textContent = radiusSlider.value + "px"
+    shapeBox.style.borderRadius = radiusSlider.value + "px";
+    // Update rotation display
+    rotateSlider.textContent = rotateSlider.value + "°";
+    shapeBox.style.transform = `rotate(${rotateSlider.value}deg)`;
+    // Apply clip-path based on selection
+    if (selected === "custom") {
+        shapeBox.style.clipPath = customInput.value;
+    } else {
+        shapeBox.style.clipPath = shapes[selected];
+      }
+    }
+    // Attach listeners
+    shapeSelect.addEventListener("change", updateShape);
+    customInput.addEventListener("input", updateShape);
+    radiusSlider.addEventListener("input", updateShape);
+    rotateSlider.addEventListener("input", updateShape);
+    // Initialize
+    updateShape();    
+    </script>
+</body>
+</html>

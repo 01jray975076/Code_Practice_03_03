@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body { 
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100vh;
+    background: #f5f5f5;
+} 
+/* Sidebar styling */
+.sidebar {
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+}
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.note {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+}
+ /* Preview area */
+.preview {
+    padding: 20px;
+    overflow-y: auto;
+}
+/* 
+      Sample elements to test selectors on.
+      These mimic real-world HTML structures.
+    */
+.sample-area {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+.card {
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+ .highlight {
+    outline: 3px solid #ff4081 !important;  /* Pink highlight */
+    background: #ffe4ec !important;
+ }
+ ul {
+    padding-left: 20px;
+ }
+ .tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #e0f7fa;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-size: 12px;
+ }
+    </style>
+    <title> CSS Selectors Trainer </title>
+</head>
+<body>
+    <!-- Sidebar -->
+     <div class="sidebar">
+        <h2>CSS Selectors Trainer</h2>
+        <label for="selectorInput">Enter a CSS Selector</label>
+        <input type="text" id="selectorInput" placeholder=".card, #title, ul li:first-child">
+        <div class="note">
+          Try selectors like:<br>
+          • <strong>.card</strong><br>
+          • <strong>#title</strong><br>
+          • <strong>ul li</strong><br>
+          • <strong>ul li:first-child</strong><br>
+          • <strong>[data-type="warning"]</strong><br>
+          • <strong>.tag:nth-child(2)</strong>
+        </div>
+     </div>
+      <!-- Preview area -->
+        <div class="sample-area" id="sampleArea">
+        <div class="preview">
+        <h2 id="title">Preview Elements</h2>
+        <!-- Cards -->
+        <div class="card" data-type="info">Card 1 - data-type="info"</div>
+        <div class="card" data-type="warning">Card 2 - data-type="warning"</div>
+        <div class="card special">Card 3 - class="special"</div>
+        <!-- List -->
+         <ul>
+            <li>List Item 1</li>
+            <li class="special">List Item 2 (special)</li>
+            <li>List Item 3</li>
+         </ul>
+          <!-- Tags -->
+        <div>
+            <span class="tag">Tag A</span>
+            <span class="tag">Tag B</span>
+            <span class="tag">Tag C</span>
+        </div>   
+        </div>
+       </div> 
+    <script>
+         // Grab the input field
+         const selectorInput = document.getElementById("selectorInput");
+         // Grab the preview area so we can search inside it
+         const sampleArea = document.getElementById("sampleArea");
+         // Function to update highlights based on the selector typed
+         function updateSelector() {
+            const selector = selectorInput.value.trim();
+            // First remove all existing highlights
+            const highlighted = sampleArea.querySelectorAll(".highlight");
+            highlighted.forEach(el => el.classList.remove("highlight"));
+            // If input is empty, do nothing
+            if (selector === "") return;
+            let matches;
+        try {
+            /*
+          querySelectorAll() will throw an error if the selector is invalid.
+          Example: "ul li:::" → invalid syntax.
+          We wrap it in try/catch so the UI doesn't break.
+        */
+       matches = sampleArea.querySelectorAll(selector);
+        } catch (e) {
+            console.warn("Invalid selector:", selector);
+            return;
+        }
+        // Add highlight class to all matched elements
+        matches.forEach(el => el.classList.add("highlight"));
+         }
+         // Update on every keystroke
+         selectorInput.addEventListener("input", updateSelector);
+    </script>
+</body>
+</html>
