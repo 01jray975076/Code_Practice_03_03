@@ -1,100 +1,159 @@
-# 📚 Jamie’s Web Development Project Collection
+📚 Jamie’s Complete Web Development Project Library
+Welcome to my full collection of front‑end development projects, built as part of my ongoing journey to master HTML, CSS, JavaScript, UI/UX, and modern web application patterns.
 
-Welcome to my complete collection of web development projects.  
-This repository documents my learning journey from foundational HTML/CSS/JS all the way to full applications and API‑driven projects.
+This repository contains 90+ projects, ranging from simple DOM exercises to full applications with API integration, drag‑and‑drop, persistent storage, and responsive UI systems.
 
-Each project is numbered in the order I built it, showing my progression through different phases of front‑end development.
+Each project is numbered in the order it was created, showing a clear progression of skills over time.
 
----
+🧱 PHASE 1 — JavaScript Fundamentals & Mini‑Games
+Small, focused projects designed to build core JS logic, DOM manipulation, and event handling.
 
-## 🚀 Project Index
+Examples include:
 
-Below is a full list of all completed projects, organized by learning phase.
+Counters
 
----
+Modal popups
 
-# 🧱 **PHASE 1 — Foundations (HTML, CSS, Basic JS)**  
-Small UI components and interactive widgets.
+Dice games
 
-| # | Project Name | Folder |
-|---|--------------|--------|
-| 1 | Responsive Card | `01_-Responsive_Card` |
-| 2 | Modal Popup | `02_-Modal_Popup` |
-| 3 | Slideshow | `03_-Slideshow` |
-| 4 | Accordion | `04_-Accordion` |
-| 5 | Interactive Buttons | `05_-Interactive_Buttons` |
-| 6 | Sticky Navigation Bar | `06_-Sticky_Nav` |
-| 7 | Responsive Image Gallery | `07_-Image_Gallery` |
-| 8 | CSS Dropdown Menu | `08_-Dropdown_Menu` |
-| 9 | JavaScript Countdown Timer | `09_-Countdown_Timer` |
+Memory match
 
----
+Slot machine
 
-# 🧩 **PHASE 2 — Intermediate Web Development**  
-APIs, localStorage, theming, and multi‑component interfaces.
+Rock‑Paper‑Scissors
 
-| # | Project Name | Folder |
-|---|--------------|--------|
-| 10 | Dark Mode Toggle | `10_-Dark_Mode_Toggle` |
-| 11 | Search Filter | `11_-Search_Filter` |
-| 12 | Weather App (API) | `12_-Weather_App` |
-| 13 | To‑Do List App | `13_-ToDo_App` |
-| 14 | Multi‑Section Website | `14_-Multi_Section_Website` |
+Maze navigator
 
----
+Score keepers
 
-# 🧠 **PHASE 3 — Advanced JavaScript Concepts**  
-Async/await, classes, canvas, audio, and more.
+Mood trackers
 
-| # | Project Name | Folder |
-|---|--------------|--------|
-| 15 | Movie Search App (API) | `15_-Movie_Search_App` |
-| 16 | Image Carousel (Autoplay + Swipe) | `16_-Image_Carousel` |
-| 17 | Form Validator | `17_-Form_Validator` |
-| 18 | Drawing App (Canvas) | `93_-Drawing_App` |
-| 19 | Audio Player UI | `94_-Audio_Player_UI` |
+Expense trackers
 
----
+High‑score systems
 
-# 🏗️ **PHASE 4 — Full Applications (Portfolio‑Ready)**  
-Larger, polished apps with multiple components.
+Timers & stopwatches
 
-| # | Project Name | Folder |
-|---|--------------|--------|
-| 20 | Portfolio Website | `95_-My_Portfolio` |
-| 21 | Recipe Finder App (API) | `96_-Recipe_Finder_App` |
-| 22 | Personal Finance Tracker | *(coming soon)* |
-| 23 | Blog Platform (Front‑End Only) | *(coming soon)* |
-| 24 | Chat UI | *(coming soon)* |
+Folders: 01_ through 40_ (varies by project)
 
----
+🎨 PHASE 2 — CSS Visualizers & UI/UX Playgrounds
+Interactive tools for understanding CSS deeply through visualization and experimentation.
 
-# 🧰 **Technologies Used Across Projects**
+Includes:
 
-- HTML5  
-- CSS3  
-- JavaScript (ES6+)  
-- Fetch API  
-- Async/Await  
-- LocalStorage  
-- Canvas API  
-- Responsive Design  
-- UI/UX Patterns  
+Flexbox visualizers
 
----
+Grid visualizers
 
-# 🎯 Purpose of This Repository
+3D transforms
 
+Shadows & depth
+
+Filters & blend modes
+
+Clip‑path shapes
+
+Animation timelines
+
+Spring physics
+
+Button effects
+
+Typography tools
+
+Color mixers (RGBA, HEX, HSLA)
+
+Folders: 41_ through 70_
+
+🧩 PHASE 3 — Intermediate Web Apps & Components
+Multi‑component interfaces and practical UI tools.
+
+Includes:
+
+Calculators
+
+Timers
+
+To‑Do apps
+
+Responsive cards
+
+Modal systems
+
+Image slideshows
+
+Accordions
+
+Multi‑section websites
+
+Pricing tables
+
+Form validators
+
+Folders: 71_ through 90_
+
+🧠 PHASE 4 — Advanced JavaScript & Full Applications
+Larger, polished apps with real functionality, persistent storage, and API integration.
+
+Includes:
+
+Notes app with folders
+
+Kanban board (drag & drop)
+
+Expense tracker
+
+Quiz app
+
+Drawing app (Canvas API)
+
+Audio player UI
+
+Personal portfolio website
+
+Recipe Finder App (API)
+
+Folders: 91_ through 96_
+
+🏗️ Project Structure
+Each project folder typically contains:
+
+Code
+index.html
+style.css
+script.js
+README.md (for larger apps)
+assets/ (optional)
+🛠️ Technologies Used Across Projects
+HTML5
+
+CSS3 (Flexbox, Grid, Animations, 3D transforms)
+
+JavaScript (ES6+)
+
+Canvas API
+
+LocalStorage
+
+Fetch API
+
+Responsive Design
+
+UI/UX Patterns
+
+🎯 Purpose of This Repository
 This repo serves as:
 
-- A record of my progress as a developer  
-- A showcase of my front‑end skills  
-- A reference for future projects  
-- A portfolio foundation  
+A complete record of my development journey
 
----
+A showcase of my front‑end skills
 
-# 📬 Contact
+A reference library for future projects
 
-Created by **Jamie**  
-Feel free to explore, fork, or reach out!
+A foundation for my portfolio and resume
+
+A demonstration of consistency, discipline, and growth
+
+📬 Contact
+Created by Jamie  
+Feel free to explore, fork, or reach out.
