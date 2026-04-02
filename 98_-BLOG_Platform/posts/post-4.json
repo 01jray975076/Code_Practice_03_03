@@ -1,0 +1,9 @@
+{
+  "id": 4,
+  "title": "Creating a Recipe Finder App with APIs",
+  "category": "Projects",
+  "tags": ["api", "javascript", "ui"],
+  "date": "2026-03-25",
+  "image": "assets/images/post4-hero.jpg",
+  "content": "<p>The Recipe Finder App uses TheMealDB API to search for recipes by name and display detailed information in a modal.</p><p>This project taught me how to work with external APIs, handle loading states, and design a clean card-based UI.</p><p>It also reinforced the importance of good error handling and user feedback.</p>"
+}

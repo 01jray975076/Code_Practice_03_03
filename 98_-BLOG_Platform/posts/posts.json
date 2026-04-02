@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "How I Built My Front-End Project Library",
+    "category": "Personal",
+    "tags": ["learning", "projects", "frontend"],
+    "date": "2026-03-01",
+    "featured": true,
+    "image": "assets/images/post1-thumb.jpg",
+    "excerpt": "A look behind the scenes at building nearly 100 front-end projects and what I learned along the way."
+  },
+  {
+    "id": 2,
+    "title": "Understanding Flexbox and Grid",
+    "category": "Tutorials",
+    "tags": ["css", "flexbox", "grid"],
+    "date": "2026-03-10",
+    "featured": true,
+    "image": "assets/images/post2-thumb.jpg",
+    "excerpt": "A practical guide to building real layouts using CSS Flexbox and Grid with visual intuition."
+  },
+  {
+    "id": 3,
+    "title": "Building a Personal Finance Tracker",
+    "category": "Projects",
+    "tags": ["javascript", "charts", "localstorage"],
+    "date": "2026-03-20",
+    "featured": false,
+    "image": "assets/images/post3-thumb.jpg",
+    "excerpt": "How I designed and coded a full personal finance dashboard with charts and persistent data."
+  },
+  {
+    "id": 4,
+    "title": "Creating a Recipe Finder App with APIs",
+    "category": "Projects",
+    "tags": ["api", "javascript", "ui"],
+    "date": "2026-03-25",
+    "featured": false,
+    "image": "assets/images/post4-thumb.jpg",
+    "excerpt": "Using TheMealDB API to build a clean, responsive recipe search experience."
+  }
+]

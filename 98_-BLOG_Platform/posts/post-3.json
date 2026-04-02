@@ -1,0 +1,9 @@
+{
+  "id": 3,
+  "title": "Building a Personal Finance Tracker",
+  "category": "Projects",
+  "tags": ["javascript", "charts", "localstorage"],
+  "date": "2026-03-20",
+  "image": "assets/images/post3-hero.jpg",
+  "content": "<p>The Personal Finance Tracker project combines forms, data modeling, charts, and localStorage into a single app.</p><p>I built a dashboard that tracks income and expenses, shows monthly totals, and visualizes category spending with bar charts.</p><p>This project helped me think more like an application developer, not just a page builder.</p>"
+}

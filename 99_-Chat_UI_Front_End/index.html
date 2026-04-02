@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Chat UI</title>
+</head>
+<body>
+    <div class="chat-app">
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <h2 class="sidebar-title">Chats</h2>
+            <ul class="contact-list">
+                <li class="contact active">
+                    <img src="assets/avatars/user1.png" alt="">
+                    <span>Alex</span>
+                </li>
+                <li class="contact active">
+                    <img src="assets/avatars/user2.png" alt="">
+                    <span>Jordan</span>
+                </li>
+            </ul>
+         </aside>
+          <!-- Main Chat Area -->
+           <main class="chat-area">
+            <!-- Chat Header -->
+             <header class="chat-header">
+                <div class="chat-user">
+                    <img src="assets/avatars/user1.png" alt="">
+                    <h3>Alex</h3>
+                </div>
+             </header>
+             <!-- Messages -->
+            <div class="messages" id="messages">
+             <!-- Messages will be injected here -->   
+            </div>
+            <!-- Input Bar -->
+             <footer class="input-bar">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button id="sendBtn">Send</button>
+             </footer>
+           </main>
+    </div>  
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    :root {
+        --bg: #f5f5f5;
+        --bg-card: #ffffff;
+        --text: #222222;
+        --accent: #4caf50;
+        --accent-soft: #e8f5e9;
+        --border: #dddddd;
+    }
+    body.dark {
+        --bg: #121212;
+        --bg-card: #1e1e1e;
+        --text: #f5f5f5;
+        --accent: #90caf9;
+        --accent-soft: #1a237e;
+        --border: #333333;
+    }    
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+}
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.header h1 {
+    font-size: 1.8em;
+}
+.theme-toggle {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text);
+    cursor: pointer;
+}
+/* LAYOUT */
+.container {
+  display: grid;
+  grid-template-columns: 1.1fr 1.2fr;
+  gap: 20px;  
+}
+.card {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+}
+.card h2 {
+    margin-bottom: 10px;
+}
+/* FORM */
+.form {
+    display: grid;
+    gap: 10px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.form-group label {
+    font-size: 0.9rem;
+}
+.form-group input,
+.form-group select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);                                                     
+}
+.btn-primary {
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: var(--accent);
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-primary:hover {
+    opacity: 0.9;
+}
+/* SUMMARY */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+.summary-grid div {
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 10px;
+}
+.summary-grid h3 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+.summary-grid p {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+/* TRANSACTIONS */
+.transaction-list {
+    list-style: none;
+    margin-top: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+.transaction-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+}
+.transaction-main {
+    display: flex;
+    flex-direction: column;
+}
+.transaction-meta {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+.transaction-amount {
+    font-weight: 600;
+}
+.transaction-amount.income {
+   color: #2e7d32;
+}
+.transaction-amount.expense {
+   color: #c62828;
+}
+.delete-btn {
+    border: none;
+    background: transparent;
+    color: #c62828;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+/* CHARTS */
+.right-panel .card {
+    margin-bottom: 16px;
+}
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+    <title>Personal Finance Tracker</title>
+</head>
+<body>
+    <header class="header">
+        <h1>Personal Finance Tracker</h1>
+        <button id="themeToggle" class="theme-toggle">🌞 Light / Dark 🌙</button>
+    </header>
+    <main class="container">
+    <!-- LEFT: FORM + SUMMARY + TRANSACTIONS -->
+     <section class="left-panel">
+        <section class="card">
+            <h2>Add Transaction</h2>
+            <form id="transactionForm" class="form">
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" required>
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount ($)</label>
+                <input type="number" id="amount" min="0.01" step="0.01" required />
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" required>
+                    <option value="Food">Food</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Fun">Fun</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" required>
+            </div>
+            <button type="submit" class="btn-primary">Add Transaction</button>
+            </form>
+        </section>
+        <section class="card summary">
+            <h2>Summary</h2>
+            <div class="summary-grid">
+            <div>
+            <h3>Total Income</h3>
+            <p id="totalIncome">$0.00</p>
+            </div>
+            <div>
+                <h3>Total Expense</h3>
+                <p id="totalExpense">$0.00</p>
+            </div>
+            <div>
+                <h3>Balance</h3>
+                <p id="balance">$0.00</p>
+              </div>
+            </div>
+        </section>
+        <section class="card">
+            <h2>Transactions</h2>
+            <ul id="transactionList" class="transaction-list"></ul>
+        </section>
+     </section>
+      <!-- RIGHT: CHARTS -->
+       <section class="right-panel">
+        <section class="card">
+            <h2>Monthly Income vs Expense</h2>
+            <canvas id="monthlyChart"></canvas>
+        </section>
+        <section class="card">
+            <h2>Category Spending Breakdown</h2>
+            <canvas id="categoryChart"></canvas>
+        </section>
+       </section>
+    </main>
+    <!-- Chart.js CDN -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+    <script>
+       document.addEventListener("DOMContentLoaded", () => {      
+       // DOM ELEMENTS
+        const transactionForm = document.getElementById("transactionForm");
+        const typeEl = document.getElementById("type");
+        const amountEl = document.getElementById("amount");
+        const categoryEl = document.getElementById("category");
+        const dateEl = document.getElementById("date");
+        const transactionList = document.getElementById("transactionList");
+        const totalIncomeEl = document.getElementById("totalIncome");
+        const totalExpenseEl = document.getElementById("totalExpense");
+        const balanceEl = document.getElementById("balance");
+        const themeToggle = document.getElementById("themeToggle");
+       // CHART ELEMENTS
+       const monthlyCtx = document.getElementById("monthlyChart");
+       const categoryCtx = document.getElementById("categoryChart");
+        //  console.log("monthlyCtx =", monthlyCtx);
+        // CHARTS SETUP
+        let monthlyChart;
+        let categoryChart;       
+       // STATE
+        let transactions = [];
+        // LOCALSTORAGE KEYS
+        const STORAGE_KEY = "finance_transactions";
+        const THEME_KEY = "finance_theme";
+        // INIT
+        init();
+        function init() {
+        // Default date = today
+        dateEl.valueAsDate = new Date();  
+        // Load theme
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark");
+        }
+        // Load transactions
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            transactions = JSON.parse(saved);
+        }
+        renderTransactions();
+        updateSummary();
+        initCharts();
+        updateCharts();
+    }
+    // THEME TOGGLE
+    themeToggle.addEventListener("click", () => {
+        console.log("button clicked");
+        document.body.classList.toggle("dark");
+        const isDark = document.body.classList.contains("dark");
+        localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+    });
+    // FORM SUBMIT
+    transactionForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+         const type = typeEl.value;
+         const amount = parseFloat(amountEl.value);
+         const category = categoryEl.value;
+         const date = dateEl.value;
+         if (!amount || amount <= 0 || !date) return;
+         const transaction = {
+            id: Date.now(),
+            type,
+            amount,
+            category,
+            date,
+         };
+         transactions.push(transaction);
+         saveTransactions();
+         renderTransactions();
+         updateSummary();
+         updateCharts();
+         transactionForm.reset();
+         dateEl.valueAsDate = new Date();
+    });
+    // SAVE TO LOCALSTORAGE
+    function saveTransactions() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+    }
+    // RENDER TRANSACTIONS
+    function renderTransactions() {
+        transactionList.innerHTML = "";
+        if (transactions.length === 0) {
+            const li = document.createElement("li");
+            li.textContent = "No transactions yet.";
+            li.style.opacity = "0.7";
+            transactionList.appendChild(li);
+            return;
+        }
+        transactions
+        .slice()
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .forEach((t) => {
+            const li = document.createElement("li");
+            li.className = "transaction-item";
+            const main = document.createElement("div");
+            main.className = "transaction-main";
+            main.innerHTML = `
+            <span>${t.category} (${t.type})</span>
+            <span class="transaction-meta">${formatDate(t.date)}</span>
+            `;
+            const amountSpan = document.createElement("span");
+            amountSpan.className = `transaction-amount ${t.type}`;
+            amountSpan.textContent = `${t.type === "income" ? "+" : "-"}$${t.amount.toFixed(2)}`;
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.textContent = "✕";
+            deleteBtn.addEventListener("click", () => deleteTransaction(t.id));
+            li.appendChild(main);
+            li.appendChild(amountSpan);
+            li.appendChild(deleteBtn);
+            transactionList.appendChild(li);
+        });
+    }
+    function deleteTransaction(id) {
+        transactions = transactions.filter((t) => t.id !== id);
+        saveTransactions();
+        renderTransactions();
+        updateSummary();
+        updateCharts();
+    }
+// SUMMARY
+function updateSummary() {
+    const income = transactions
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+    const expense = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+    const balance = income - expense;
+    totalIncomeEl.textContent = `$${income.toFixed(2)}`;
+    totalExpenseEl.textContent = `$${expense.toFixed(2)}`;
+    balanceEl.textContent = `$${balance.toFixed(2)}`;
+}
+   
+   function initCharts() {
+    const monthLabels = ["Jan","Feb","Mar","Apr", "May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    monthlyChart = new Chart(monthlyCtx, {
+        type: "bar",
+        data: {
+            labels: monthLabels,
+            datasets: [
+                {label: "Income", data: new Array(12).fill(0), backgroundColor: "rgba(76, 175, 80, 0.7)"},
+                {label: "Expense", data: new Array(12).fill(0), backgroundColor: "rgba(244, 67, 54, 0.7)"}
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true }
+            }
+        },
+    });
+    const categories = ["Food", "Bills", "Fun", "Other"];
+    categoryChart = new Chart(categoryCtx, {
+    type: "bar",
+    data: {
+        labels: categories,
+        datasets: [
+            {
+                label: "Total Spent",
+                data: new Array(categories.length).fill(0),
+                backgroundColor: "rgba(33, 150, 243, 0.7)",
+            },            
+        ],
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,}
+        }
+      }
+  });
+}
+// UPDATE CHART DATA
+   function updateCharts(){
+    updateMonthlyChart();
+    updateCategoryChart();
+    monthlyChart.update();
+    categoryChart.update();
+   }
+   function updateMonthlyChart() {
+    const incomeByMonth = new Array(12).fill(0);
+    const expenseByMonth = new Array(12).fill(0);
+    transactions.forEach((t) => {
+        const monthIndex = new Date(t.date).getMonth();
+        if (t.type === "income") {
+            incomeByMonth[monthIndex] += t.amount;
+        } else {
+            expenseByMonth[monthIndex] += t.amount;
+        }
+    });
+    monthlyChart.data.datasets[0].data = incomeByMonth;
+    monthlyChart.data.datasets[1].data = expenseByMonth;
+   }
+   function updateCategoryChart() {
+    const categories = ["Food", "Bills", "Fun", "Other"];
+    const totals = new Array(categories.length).fill(0);
+    transactions.filter((t) => t.type === "expense")
+    .forEach((t) => {
+        const idx = categories.indexOf(t.category);
+        if (idx !== -1) {
+            totals[idx] += t.amount;
+        }
+    });
+    categoryChart.data.datasets[0].data = totals;
+   }
+   // HELPERS
+   function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString();
+   }
+   });
+    </script>    
+</body>
+</html>

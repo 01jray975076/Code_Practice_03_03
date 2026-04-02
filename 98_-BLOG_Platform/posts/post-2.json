@@ -1,0 +1,9 @@
+{
+  "id": 2,
+  "title": "Understanding Flexbox and Grid",
+  "category": "Tutorials",
+  "tags": ["css", "flexbox", "grid"],
+  "date": "2026-03-10",
+  "image": "assets/images/post2-hero.jpg",
+  "content": "<p>Flexbox and Grid are the backbone of modern layout on the web. Flexbox is great for one-dimensional layouts (rows or columns), while Grid shines for two-dimensional layouts.</p><p>In my projects, I used Flexbox for navbars, cards, and simple layouts, and Grid for dashboards, galleries, and complex page structures.</p><p>The key is to practice by building real components, not just reading docs.</p>"
+}

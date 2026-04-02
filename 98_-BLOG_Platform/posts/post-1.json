@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "title": "How I Built My Front-End Project Library",
+  "category": "Personal",
+  "tags": ["learning", "projects", "frontend"],
+  "date": "2026-03-01",
+  "image": "assets/images/post1-hero.jpg",
+  "content": "<p>Over time, I built nearly 100 front-end projects: games, utilities, CSS visualizers, and full applications. This blog post walks through how that collection came together and what I learned along the way.</p><p>I started with tiny projects: counters, modals, and simple games. Then I moved into CSS playgrounds, visualizers, and UI components. Eventually, I built full apps like a personal finance tracker, recipe finder, and portfolio site.</p><p>The biggest lesson: consistency beats intensity. Small, focused projects add up.</p>"
+}

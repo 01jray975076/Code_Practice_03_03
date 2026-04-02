@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Blog Platform</title>
+</head>
+<body>
+    <header class="site-header">
+        <div class="log">Jamie's Blog</div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="#categories">Categories</a>
+        </nav>
+    </header>
+    <main class="container">
+      <!-- HERO / FEATURED -->
+       <section class="hero">
+        <div>
+            <h1>Welcome to the Blog</h1>
+            <p>Articles on front-end development, projects, and learning in public.</p>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search posts by title or tag...">
+        </div>
+       </section>
+       <!-- FEATURED POSTS -->
+        <section class="section">
+            <h2>Featured Posts</h2>
+            <div id="featuredPosts" class="post-grid"></div>
+        </section>
+        <!-- CATEGORIES -->
+         <section class="section" id="categories">
+            <h2>Browse by Category</h2>
+            <div id="categoryFilters" class="category-filters">
+               <!-- Buttons injected by JS -->  
+            </div>
+         </section>
+         <!-- ALL POSTS -->
+          <section class="section">
+            <h2>All Posts</h2>
+            <div id="postsGrid" class="post-grid"></div>
+          </section>
+    </main>
+    <footer class="site-footer">
+      <p>Built by Jamie · Front-End Blog Platform</p>  
+    </footer>  
+    <script src="script.js"></script>
+</body>
+</html>
