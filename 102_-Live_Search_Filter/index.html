@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 40px;
+        }
+        #searchBox {
+            padding: 10px;
+            width: 250px;
+            font-size: 1rem;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        li {
+            padding: 8px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        #noResults {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: red;
+            display: none;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+    </style>
+    <title>Live Search Filter</title>
+</head>
+<body>
+    <h1>Live Search Filter</h1>
+    <input type="text" id="searchBox" placeholder="Type to filter items..." />
+   <div id="controls">
+    <button id="sortBtn">Sort A → Z </button>
+    <label>
+        <input type="checkbox" id="caseCheck">Case Sensitive</input>
+    </label>
+   </div>
+   <div id="noResults">No results found</div>  
+    <ul id="resultsList"></ul>   
+    <script>
+        const items = [
+            "Apple",
+            "Banana",
+            "Orange",
+            "Grapes",
+            "Strawberry",
+            "Blueberry",
+            "Watermelon",
+            "Pineapple",
+            "Mango",
+            "Peach",
+            "Kiwi",
+            "Pear"
+        ];
+        const searchBox = document.getElementById("searchBox");
+        const resultsList = document.getElementById("resultsList");
+        const noResults = document.getElementById("noResults");
+        const sortBtn = document.getElementById("sortBtn");
+        const caseCheck = document.getElementById("caseCheck");   
+        function renderList(filteredItems) {
+            resultsList.innerHTML = "";
+            if (filteredItems.length === 0) {
+                noResults.style.display = "block";
+                return;
+            }
+            noResults.style.display = "none";           
+                           
+            filteredItems.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = item;
+                resultsList.appendChild(li);
+            });
+        }
+        function filterItems() {
+            const query = searchBox.value;
+            const caseSensitive = caseCheck.checked;
+            const filtered = items.filter(item => {
+                if (caseSensitive) {
+                    return item.includes(query);
+                } else {
+                    return item.toLowerCase().includes(query.toLowerCase());
+                }
+            });
+            renderList(filtered);
+        }
+        searchBox.addEventListener("input", filterItems);
+        caseCheck.addEventListener("change", filterItems);
+        sortBtn.addEventListener("click", () => {
+            items.sort((a, b) => a.localeComepare(b));
+            filterItems();
+        })
+        
+        // Initial render
+        renderList(items);
+    </script>
+</body>
+</html>

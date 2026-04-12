@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #count {
+            font-size: 1rem;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        /* Flash effect */
+        .flash {
+            background-color: red !important;
+            color: white;
+        }
+    </style>
+    <title>Click Counter</title>
+</head>
+<body>
+    <h1>Click Counter</h1>
+    <div id="count">0</div>
+    <button id="btn">Increase</button>
+    <button id="decreaseBtn">Decrease</button>
+    <button id="resetBtn">Reset</button>
+    <script>
+        let count = 0;
+        const countDisplay = document.getElementById("count");
+        const increaseButton = document.getElementById("btn");
+        const decreaseButton = document.getElementById("decreaseBtn");
+        const resetButton = document.getElementById("resetBtn")
+        increaseButton.addEventListener("click", () => {
+            count++;
+            countDisplay.textContent = count;
+        });
+        decreaseButton.addEventListener("click", () => {
+            count--;
+            countDisplay.textContent = count;
+        });
+        resetButton.addEventListener("click", () => {
+            count = 0;
+            countDisplay.textContent = count;       
+        // Add flash class
+        resetButton.classList.add("flash");
+        // Remove it after 300ms
+        setTimeout(() => {
+            resetButton.classList.remove("flash");
+        }, 300);
+         });
+    </script>
+    
+</body>
+</html>

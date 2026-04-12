@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            transition: background-color 0.4s ease;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #colorValue {
+            font-size: 1.2em;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+    <title>Color Switcher</title>
+</head>
+<body>
+    <h1>Color Switcher</h1>
+    <button id="colorBtn">Random Color</button>
+    <button id="gradientBtn">Random 2-Color Gradient</button>
+    <button id="gradient3Btn">Random 3-Color Gradient</button>
+   <div>
+    <label for="angleSlider"><strong>Gradient Angle:</strong></label><br>
+    <input type="range" id="angleSlider" min="0" max="360" value="135">
+    <div id="angleValue">Angle: 135°</div>
+   </div>
+   
+   
+    <div id="colorValue">Current Color: rgb(255,255,255)</div>
+    <script>
+        const colorBtn = document.getElementById("colorBtn");
+        const gradientBtn = document.getElementById("gradientBtn");
+        const gradient3Btn = document.getElementById("gradient3Btn");
+        const colorValue = document.getElementById("colorValue");
+        const angleSlider = document.getElementById("angleSlider");
+        const angleValue = document.getElementById("angleValue");
+        
+        
+        function randomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+        function updateAngleDisplay() {
+            angleValue.textContent = `Angle: ${angleSlider.value}°`;
+        }
+        angleSlider.addEventListener("input", updateAngleDisplay);
+        colorBtn.addEventListener("click", () => {
+            const newColor = randomColor();
+            document.body.style.backgroundColor = newColor;
+            colorValue.textContent = "Current Color: " + newColor;
+        });
+        gradientBtn.addEventListener("click", () => {
+            const color1 = randomColor();        
+            const color2 = randomColor();
+            const angle = angleSlider.value;
+            const gradient = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
+            document.body.style.background = gradient;
+            colorValue.textContent = `Current Gradient: ${color1} → ${color2}`;        
+        });
+        gradient3Btn.addEventListener("click", () => {
+            const color1 = randomColor();        
+            const color2 = randomColor();
+            const color3 = randomColor();
+            const angle = angleSlider.value;
+            const gradient = `linear-gradient(${angle}deg, ${color1}, ${color2})`;
+            document.body.style.background = gradient;
+            colorValue.textContent = `Current Gradient: ${color1} → ${color2} → ${color3}`;        
+        });
+        updateAngleDisplay();
+    </script>
+</body>
+</html>
