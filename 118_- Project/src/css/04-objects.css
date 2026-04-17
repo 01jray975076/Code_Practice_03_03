@@ -1,0 +1,15 @@
+.o-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+.o-cluster {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+}
+.o-sidebar {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--space-lg);
+}

@@ -1,0 +1,47 @@
+.btn {
+    padding: 5rem 1rem;
+    background: var(--color-primary);
+    border: none;
+    color: white;
+    border-radius: var(--radius-sm);
+}
+/* Modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal__content {
+    background: var(--color-surface);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+}
+/* Toast */
+.toast-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: grid;
+    gap: 5rem;
+}
+.toast {
+    background: var(--color-surface);
+    padding: .75rem 1rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    transition: opacity .3 ease; 
+}
+.toast.hide {
+        opacity: 0;    
+}
+/* Accordion */
+.accordion__panel {
+    padding: var(--space-sm);
+    display: none;
+}
+.accordion__item.open .accordion__panel {
+    display: block;
+}

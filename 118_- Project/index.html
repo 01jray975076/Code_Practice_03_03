@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla UI Kit Dashboard</title>
+    <!-- CSS Layers -->
+     <link rel="stylesheet" href="src/css/01-settings.css">
+     <link rel="stylesheet" href="src/css/02-generic.css">
+     <link rel="stylesheet" href="src/css/03-elements.css">
+     <link rel="stylesheet" href="src/css/04-objects.css">
+     <link rel="stylesheet" href="src/css/05-components.css">
+     <link rel="stylesheet" href="src/css/06-utilities.css">
+</head>
+<body>
+    <main class="o-sidebar">
+        <aside class="sidebar">
+            <nav>
+                <ul class="o-stack">
+                    <li><button data-nav="components">Components</button></li>
+                    <li><button data-nav="settings">Settings</button></li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="content">
+            <h2>Dashboard</h2>
+            <!-- Tabs Component -->
+             <div class="tabs" aria-label="Example Tabs">
+                <div class="tabs__list" role="tablist">
+                    <button role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">Overview</button>
+                    <button role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">Details</button>
+                </div>
+                <div id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+                    <p>Overview content...</p>
+                </div> 
+                <div id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+                    <p>Details content...</p>
+                </div>
+             </div>
+             <hr>
+             <!-- Dropdown -->
+              <div class="dropdown">
+                <button data-dropdown-button class="btn">Menu</button>
+                <div data-dropdown-menu hidden class="dropdown__menu">
+                    <button>Profile</button>
+                    <button>Setting</button>
+                    <button>Logout</button>
+                </div>
+              </div>
+              <hr>
+              <!-- Modal -->
+               <button class="btn">Open Modal</button>
+               <div class="modal" hidden>
+                <div class="modal__content">
+                    <button data-close class="btn">Close</button>
+                    <p>This is a modal window</p>
+                </div>
+               </div>
+               <hr>
+               <!-- Accordion -->
+                <div class="accordion">
+                    <div class="accordion__item">
+                        <button class="accordion__header">Section 1</button>
+                        <div class="accordion__panel">Content-1</div>
+                    </div>
+                    <div class="accordion__item">
+                        <button class="accordion__header">Section 2</button>
+                        <div class="accordion__panel">Content 2</div>
+                    </div>
+                </div>
+        </section>
+    </main>   
+    <script type="module" src="src/js/main.js"></script>
+</body>
+</html>
